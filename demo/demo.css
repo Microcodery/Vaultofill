@@ -1,0 +1,208 @@
+/* ============================================================================
+   Demo page shell — header, form picker, and the browser/side-panel split.
+   The .vof-* block further down is copied from src/ext/panel/sidepanel.html so
+   the review UI renders exactly as it does inside the real extension.
+   ========================================================================== */
+:root {
+  color-scheme: light dark;
+  accent-color: #6e7781;
+  --bg: #f6f8fa;
+  --surface: #ffffff;
+  --text: #1f2328;
+  --muted: #57606a;
+  --border: #d0d7de;
+  --accent: #4b5563;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #010409;
+    --surface: #0d1117;
+    --text: #e6edf3;
+    --muted: #9198a1;
+    --border: #30363d;
+    --accent: #6e7781;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font: 14px/1.5 system-ui, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.site-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.site-header-main { flex: 1 1 auto; min-width: 0; }
+.site-header h1 { margin: 0 0 4px; font-size: 18px; }
+.tagline { margin: 0; color: var(--muted); font-size: 13px; max-width: 70ch; }
+.repo-link {
+  flex: none; align-self: center; font-weight: 600; font-size: 13px;
+  color: var(--text); text-decoration: none;
+  border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px;
+  background: var(--bg);
+}
+.repo-link:hover { border-color: var(--accent); }
+
+.top-bar {
+  display: flex; align-items: end; gap: 16px;
+  padding: 12px 20px; background: var(--surface); border-bottom: 1px solid var(--border);
+}
+.form-picker { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); }
+.form-picker select {
+  font: inherit; font-size: 14px; padding: 6px 8px; min-width: 260px;
+  border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--text);
+}
+.secondary-btn {
+  font: 600 13px system-ui, sans-serif; padding: 7px 12px; cursor: pointer;
+  color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+}
+.secondary-btn:hover { border-color: var(--accent); }
+
+.stage { flex: 1 1 auto; display: flex; gap: 16px; padding: 16px 20px; min-height: 0; }
+
+.page-pane {
+  flex: 1 1 60%; min-width: 0; display: flex; flex-direction: column;
+  border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--surface);
+}
+.pane-chrome {
+  display: flex; align-items: center; gap: 6px; padding: 8px 12px;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+}
+.pane-chrome .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border); }
+.pane-url { margin-left: 10px; font-size: 12px; color: var(--muted); }
+#form-frame { flex: 1 1 auto; width: 100%; border: 0; background: #fff; }
+
+.panel-pane {
+  flex: 0 0 380px; display: flex; flex-direction: column; min-height: 0;
+  border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--surface);
+}
+.panel-titlebar {
+  padding: 10px 14px; font-weight: 700; font-size: 13px;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+}
+.panel-scroll { flex: 1 1 auto; overflow-y: auto; padding: 12px 14px; }
+
+.sim-banner {
+  font-size: 12px; line-height: 1.45; color: var(--muted);
+  background: rgba(110,119,129,0.1); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 12px; margin-bottom: 10px;
+}
+.sim-banner strong { color: var(--text); }
+
+.legend { display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.swatch-green { background: #1a7f37; }
+.swatch-yellow { background: #9a6700; }
+.swatch-red { background: #d1242f; }
+
+.demo-tip {
+  font-size: 11px; line-height: 1.5; color: var(--muted);
+  background: rgba(139, 148, 158, 0.1); border-radius: 6px;
+  padding: 8px 10px; margin: 0 0 10px;
+}
+.demo-tip strong { color: var(--text); }
+
+.read-btn { width: 100%; margin-bottom: 8px; }
+.status-line { font-size: 12px; color: var(--muted); min-height: 1.4em; margin-bottom: 8px; }
+
+@media (max-width: 860px) {
+  .stage { flex-direction: column; }
+  .panel-pane { flex: 1 1 auto; }
+  #form-frame { min-height: 320px; }
+}
+
+/* ============================================================================
+   Review UI — copied verbatim from src/ext/panel/sidepanel.html so the demo
+   panel matches the real extension. Keep in sync if the panel styles change.
+   ========================================================================== */
+.vof-placeholder { font-size: 13px; color: #57606a; padding: 16px 4px; text-align: center; }
+/* Two-line row: [label · tier badge · ⋮] on top, full-width value below.
+   position:relative anchors the menu popover. */
+.vof-row {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 8px;
+  border-left: 4px solid transparent;
+  margin-bottom: 4px;
+  border-radius: 4px;
+}
+.vof-row-head { display: flex; align-items: center; gap: 6px; }
+.vof-row label.vof-field-label { flex: 0 1 auto; min-width: 0; font-size: 12px; word-break: break-word; }
+/* The vault label we matched the field to (why it filled). */
+.vof-used-label { flex: none; font-size: 10px; color: #6e7781; background: rgba(139,148,158,0.15); border-radius: 10px; padding: 1px 6px; white-space: nowrap; }
+.vof-used-label::before { content: "→ "; }
+.vof-row-meta { flex: none; margin-left: auto; display: flex; align-items: center; gap: 6px; }
+.vof-row input, .vof-row select, .vof-row textarea { padding: 4px 6px; font: inherit; min-width: 0; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 4px; }
+/* Value on its own line, full width, matching the page field. */
+.vof-row .vof-value { width: 100%; box-sizing: border-box; }
+.vof-row .vof-combo { width: 100%; display: flex; }
+.vof-row .vof-combo input { flex: 1 1 auto; min-width: 0; }
+.vof-row textarea { resize: vertical; min-height: 2.4em; }
+.vof-row .vof-choices { display: flex; flex-direction: column; gap: 2px; }
+.vof-choice { font-size: 12px; display: flex; align-items: center; gap: 4px; }
+.vof-choice input { flex: none; padding: 0; min-width: 0; }
+/* Cycling storage-tier badge (click to change); colour reflects the tier. */
+.vof-tier-badge {
+  flex: none; cursor: pointer; font: 600 10px system-ui, sans-serif;
+  padding: 2px 6px; border-radius: 10px; border: 1px solid transparent; white-space: nowrap;
+  /* Constant width so cycling Permanent/Temporary/One-time doesn't reflow. */
+  min-width: 68px; text-align: center; box-sizing: border-box;
+}
+.vof-tier-badge[data-tier="stable"] { background: rgba(26,127,55,0.15); color: #1a7f37; border-color: rgba(26,127,55,0.35); }
+.vof-tier-badge[data-tier="volatile"] { background: rgba(154,103,0,0.15); color: #9a6700; border-color: rgba(154,103,0,0.35); }
+.vof-tier-badge[data-tier="ephemeral"] { background: rgba(139,148,158,0.15); color: #6e7781; border-color: rgba(139,148,158,0.35); }
+/* Sensitive-field lock toggle (opt-in). */
+.vof-sensitive { flex: none; cursor: pointer; background: none; border: none; font-size: 13px; line-height: 1; padding: 0 2px; }
+/* ⋮ menu trigger + popover. */
+.vof-menu-btn { flex: none; cursor: pointer; background: none; border: none; font-size: 16px; line-height: 1; padding: 0 4px; color: #6e7781; }
+.vof-menu {
+  display: none; position: absolute; right: 8px; top: 100%; z-index: 10;
+  min-width: 180px; padding: 6px; margin-top: 2px;
+  background: #fff; border: 1px solid #d0d7de; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+}
+.vof-menu.open { display: block; }
+.vof-menu-section { padding: 4px 2px; }
+.vof-menu-section + .vof-menu-section { border-top: 1px solid #eaeef2; }
+.vof-menu-heading { font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: #8b949e; margin-bottom: 3px; }
+.vof-menu input.vof-new-variant, .vof-menu input.vof-new-label { width: 100%; font-size: 12px; padding: 3px 4px; }
+.vof-menu-toggle { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.vof-menu-toggle input { flex: none; }
+.vof-missing { border-left-color: #d1242f; background: rgba(209, 36, 47, 0.08); }
+.vof-connected { border-left-color: #9a6700; background: rgba(154, 103, 0, 0.08); }
+.vof-certain { border-left-color: #1a7f37; background: rgba(26, 127, 55, 0.08); }
+.vof-pending { border-left-color: #8b949e; background: rgba(139, 148, 158, 0.06); opacity: 0.85; }
+.vof-pending-mark { flex: none; font-size: 11px; font-style: italic; color: #8b949e; }
+.vof-progress-note { font-size: 12px; color: #8b949e; margin: 8px 0 2px; }
+.vof-actions { display: flex; gap: 8px; margin-top: 6px; }
+#submit-button, #fill-only-button {
+  font: 600 13px system-ui, sans-serif;
+  padding: 8px 12px;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+#submit-button { background: #1a7f37; }
+#fill-only-button { background: #6e7781; }
+#submit-button:disabled, #fill-only-button:disabled { opacity: 0.6; cursor: default; }
+
+@media (prefers-color-scheme: dark) {
+  #form-frame { background: #fff; } /* fixtures are light-themed documents */
+  .vof-menu { background: #161b22; border-color: #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+  .vof-menu-section + .vof-menu-section { border-top-color: #30363d; }
+  .vof-placeholder { color: #9198a1; }
+}

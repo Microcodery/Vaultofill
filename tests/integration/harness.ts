@@ -11,6 +11,9 @@ import { classify } from "../../src/core/fill/matcher";
 import { persistReview } from "../../src/core/fill/persistReview";
 import { CompletionRequest, ModelClient } from "../../src/core/planner/modelClient";
 import { PageBridge } from "../../src/core/page/pageBridge";
+import { labelForQuestion, parseQuestions } from "../../demo/keywordModel";
+
+export { labelForQuestion, parseQuestions };
 
 /** Every form fixture the harness exercises (index.html is a directory page, not a form). */
 export const FIXTURE_NAMES = [
@@ -59,76 +62,10 @@ export function loadFixture(name: string): LoadedFixture {
 }
 
 // --- Deterministic fake model -------------------------------------------------
-
-/** Ordered keyword rules mapping a form question to a canonical (or plausibly
- *  invented) label. First match wins; specific rules precede general ones. A few
- *  rules deliberately INVENT non-seed labels (GPA/essay/major) so the invention
- *  path is exercised. Everything unmatched is UNKNOWN — the matcher then derives a
- *  question-based label, mirroring a real red field. */
-const RULES: [RegExp, string][] = [
-  [/linkedin/, "LINKEDIN"],
-  // Emergency-contact rules precede PHONE/NAME so "Emergency contact phone/name"
-  // don't fall to PHONE/FULL_NAME. Phone-specific first.
-  [/emergency contact (phone|number)/, "EMERGENCY_CONTACT_PHONE"],
-  [/emergency/, "EMERGENCY_CONTACT"],
-  [/e-?mail/, "EMAIL"],
-  [/first name|given name/, "FIRST_NAME"],
-  [/last name|surname|family name/, "LAST_NAME"],
-  [/full name|legal name|\byour name\b/, "FULL_NAME"],
-  [/phone|mobile|\btel\b/, "PHONE"],
-  [/date of birth|\bdob\b|birth ?date/, "DATE_OF_BIRTH"],
-  [/check-?in|arrival|pick-?up|\bembark|tour start|appointment date|event date|start date/, "START_DATE"],
-  [/check-?out|departure|return|drop-?off|disembark|end date/, "END_DATE"],
-  [/apartment|apt\b|suite|unit|address line 2/, "ADDRESS_LINE_2"],
-  [/street|\baddress\b/, "STREET_ADDRESS"],
-  [/\bcity\b|town/, "CITY"],
-  [/state|province/, "STATE"],
-  [/\bzip\b|postal/, "POSTAL_CODE"],
-  [/country/, "COUNTRY"],
-  // Overlap clusters (invented labels the different forms phrase differently).
-  [/goals|objectives|mission|aim to achieve/, "COMPANY_GOALS"],
-  [/number of employees|team size|how many.*employ/, "EMPLOYEE_COUNT"],
-  [/years in (business|operation)|how long.*operat/, "YEARS_IN_BUSINESS"],
-  [/annual revenue|gross annual|yearly gross|\brevenue\b/, "ANNUAL_REVENUE"],
-  [/\bein\b|employer identification|federal tax id|tax id/, "TAX_ID"],
-  [/dietary|allerg/, "DIETARY_RESTRICTIONS"],
-  [/guest|occupant|passenger|party size|attendee|number of people|group size|headcount/, "NUM_PEOPLE"],
-  [/room type/, "ROOM_TYPE"],
-  [/special request|comments|\bnotes\b/, "SPECIAL_REQUESTS"],
-  [/\btime\b/, "TIME"],
-  [/company|employer|organi[sz]ation|business name/, "COMPANY"],
-  [/job title|position|desired role|\brole\b/, "JOB_TITLE"],
-  [/website|homepage|portfolio|\burl\b/, "WEBSITE"],
-  [/cover letter/, "COVER_LETTER"],
-  [/passport/, "PASSPORT_NUMBER"],
-  [/card number|credit card/, "CARD_NUMBER"],
-  // Invented (non-seed) labels — realistic for these fixtures, absent from the vocab.
-  [/\bgpa\b/, "CUMULATIVE_GPA"],
-  [/essay/, "PERSONAL_ESSAY"],
-  [/major|field of study/, "INTENDED_MAJOR"],
-  [/\bname\b/, "FULL_NAME"],
-];
-
-export function labelForQuestion(question: string): string {
-  const q = question.toLowerCase();
-  for (const [re, label] of RULES) if (re.test(q)) return label;
-  return "UNKNOWN";
-}
-
-/** Recover the numbered questions the matcher put in the labeling prompt so the
- *  fake can answer them in order (buildLabelPrompt formats them as "N. question").
- *  Positions by the prompt's OWN number so an empty question ("N. ") keeps its slot
- *  and doesn't shift every later label — matching the real model, which answers all
- *  N in order. An empty slot → "" → UNKNOWN. */
-function parseQuestions(req: CompletionRequest): string[] {
-  const content = req.messages.map((m) => m.content).join("\n");
-  const byNumber: string[] = [];
-  for (const line of content.split("\n")) {
-    const m = /^\s*(\d+)\.\s?(.*?)\s*$/.exec(line);
-    if (m) byNumber[Number(m[1]) - 1] = m[2]!;
-  }
-  return Array.from(byNumber, (q) => q ?? "");
-}
+//
+// The keyword rules + question parsing live in demo/keywordModel (shared with the
+// interactive demo). The harness keeps only the vitest `vi.fn` wrapper so tests
+// can assert on the model's calls.
 
 export type FakeModel = ModelClient & { complete: ReturnType<typeof vi.fn> };
 

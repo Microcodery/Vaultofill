@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vaultofill — interactive demo</title>
+    <link rel="stylesheet" href="demo.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header-main">
+        <h1>Vaultofill — interactive demo</h1>
+        <p class="tagline">
+          A privacy-first browser extension that fills web forms from your own saved details, on-device.
+          Pick a form below and watch the real pipeline read it, match your vault, and fill it in.
+        </p>
+      </div>
+      <a class="repo-link" href="https://github.com/Microcodery/Vaultofill" target="_blank" rel="noopener">
+        View the repo →
+      </a>
+    </header>
+
+    <div class="top-bar">
+      <label class="form-picker">
+        <span>Demo form</span>
+        <select id="form-select"></select>
+      </label>
+      <button id="reset" type="button" class="secondary-btn">Reset demo data</button>
+    </div>
+
+    <main class="stage">
+      <section class="page-pane">
+        <div class="pane-chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="pane-url">example-form.test</span>
+        </div>
+        <!-- Trusted first-party fixtures only. allow-same-origin + allow-scripts is
+             deliberate: the demo injects demoFrame.js into the frame's own realm so
+             the DOM sweep/fill run where the elements' instanceof checks hold. -->
+        <iframe id="form-frame" title="Demo form" sandbox="allow-same-origin allow-scripts allow-forms"></iframe>
+      </section>
+
+      <aside class="panel-pane">
+        <div class="panel-titlebar">Vaultofill</div>
+        <div class="panel-scroll">
+          <div class="sim-banner">
+            <strong>Simulated install.</strong> The real extension runs this same pipeline with an
+            on-device LLM; this demo uses a deterministic stand-in model, so there's no ~1&nbsp;GB download.
+          </div>
+          <div class="legend">
+            <span class="legend-item"><span class="swatch swatch-green"></span>green = known (from your vault)</span>
+            <span class="legend-item"><span class="swatch swatch-yellow"></span>yellow = linked (a likely match to confirm)</span>
+            <span class="legend-item"><span class="swatch swatch-red"></span>red = new (unrecognized field)</span>
+          </div>
+          <p class="demo-tip">
+            The vault is pre-seeded, so personal fields fill <strong>green on every form</strong>.
+            To see a <em>new</em> field carry across sites: fill a red field, click its tier badge to
+            <strong>Permanent</strong> or <strong>Temporary</strong> (One-time isn't saved), Fill, then open
+            another form that asks the same thing differently — it turns green/yellow. Dates &amp; guest counts
+            link automatically. <strong>Try two forms.</strong>
+          </p>
+          <button id="read" type="button" class="secondary-btn read-btn">Read this Page</button>
+          <div id="status" class="status-line">Loading…</div>
+          <div id="review"></div>
+        </div>
+      </aside>
+    </main>
+
+    <script type="module" src="demo.js"></script>
+  </body>
+</html>
