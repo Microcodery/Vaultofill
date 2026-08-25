@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Procurement — Supplier Onboarding</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", Roboto, Arial, sans-serif; background: #fafafa; color: #222; line-height: 1.5; }
+    .page { max-width: 680px; margin: 0 auto; padding: 32px 20px 60px; }
+    h1 { font-size: 22px; margin: 0 0 20px; }
+    .field { margin-bottom: 18px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    input, select { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; }
+    button { padding: 11px 24px; font-size: 15px; color: #fff; background: #37474f; border: none; border-radius: 6px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Supplier Onboarding Form</h1>
+    <form id="supplier-form" novalidate>
+      <div class="field">
+        <label for="legal-name">Legal business name</label>
+        <input type="text" id="legal-name" name="legal_name" autocomplete="organization">
+      </div>
+      <div class="field">
+        <label for="ein">Employer Identification Number</label>
+        <input type="text" id="ein" name="ein" placeholder="XX-XXXXXXX">
+      </div>
+      <div class="field">
+        <label for="annual-revenue">Annual revenue</label>
+        <input type="number" id="annual-revenue" name="annual_revenue" min="0" step="1000">
+      </div>
+      <div class="field">
+        <label for="remit-email">Remittance email</label>
+        <input type="email" id="remit-email" name="remit_email">
+      </div>
+      <div class="field">
+        <label for="phone">Phone number</label>
+        <input type="tel" id="phone" name="phone" autocomplete="tel">
+      </div>
+      <div class="field">
+        <label for="terms">Payment terms</label>
+        <select id="terms" name="terms">
+          <option value="">Select terms…</option>
+          <option value="net15">Net 15</option>
+          <option value="net30">Net 30</option>
+          <option value="net60">Net 60</option>
+        </select>
+      </div>
+      <button type="submit">Submit onboarding</button>
+    </form>
+  </div>
+</body>
+</html>

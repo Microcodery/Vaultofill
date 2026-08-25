@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Velocity Labs — Startup Accelerator Application</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Inter", system-ui, sans-serif; background: #0f1117; color: #e7e9ee; line-height: 1.5; }
+    .shell { max-width: 720px; margin: 0 auto; padding: 40px 20px 72px; }
+    h1 { font-size: 26px; margin: 0 0 2px; }
+    .kicker { color: #8b93a7; margin: 0 0 28px; font-size: 14px; }
+    .panel { background: #171a24; border: 1px solid #262b3a; border-radius: 14px; padding: 26px; }
+    .grp { margin-bottom: 18px; }
+    .cols { display: flex; gap: 16px; flex-wrap: wrap; }
+    .cols .grp { flex: 1 1 220px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; color: #cfd4e0; }
+    input, textarea { width: 100%; padding: 11px 12px; border: 1px solid #333a4d; border-radius: 9px; font-size: 15px; background: #0f1117; color: #e7e9ee; font-family: inherit; }
+    textarea { min-height: 110px; resize: vertical; }
+    button { margin-top: 8px; padding: 12px 26px; font-size: 15px; font-weight: 700; color: #0f1117; background: #7c5cff; border: none; border-radius: 9px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <h1>Velocity Labs Accelerator</h1>
+    <p class="kicker">Cohort 12 · Applications close soon</p>
+    <div class="panel">
+      <form id="accel-form" novalidate>
+        <div class="grp">
+          <label for="founder">Founder name</label>
+          <input type="text" id="founder" name="founder">
+        </div>
+        <div class="grp">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email">
+        </div>
+        <div class="grp">
+          <label for="legal-name">Legal business name</label>
+          <input type="text" id="legal-name" name="legal_name">
+        </div>
+        <div class="grp">
+          <label for="aim">What does your business aim to achieve?</label>
+          <textarea id="aim" name="aim"></textarea>
+        </div>
+        <div class="cols">
+          <div class="grp">
+            <label for="annual-revenue">Annual revenue</label>
+            <input type="number" id="annual-revenue" name="annual_revenue" min="0" step="1000">
+          </div>
+          <div class="grp">
+            <label for="employees">Number of employees</label>
+            <input type="number" id="employees" name="employees" min="0" step="1">
+          </div>
+        </div>
+        <div class="grp">
+          <label for="linkedin">LinkedIn URL</label>
+          <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/…">
+        </div>
+        <div class="grp">
+          <label for="website">Company website</label>
+          <input type="url" id="website" name="website" placeholder="https://…">
+        </div>
+        <button type="submit">Apply to cohort</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

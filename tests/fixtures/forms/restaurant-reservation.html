@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Olive &amp; Ember — Reserve a Table</title>
+<style>
+  :root {
+    --ink: #2b2118;
+    --ink-soft: #6b5d4f;
+    --gold: #b4884a;
+    --gold-dark: #8f6a35;
+    --cream: #faf6ef;
+    --panel: #ffffff;
+    --line: #e6ddcf;
+    --danger: #b23a2e;
+    --danger-bg: #fbecea;
+    --ok: #2e7d55;
+    --ok-bg: #e9f6ee;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Iowan Old Style", Georgia, "Times New Roman", serif;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.55;
+  }
+  .card {
+    max-width: 480px;
+    margin: 48px auto;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(43,33,24,.08);
+    overflow: hidden;
+  }
+  .card-head {
+    text-align: center;
+    padding: 30px 28px 22px;
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, #fffdf9, #f8f1e6);
+  }
+  .brand {
+    font-size: 12px; letter-spacing: .28em; text-transform: uppercase;
+    color: var(--gold-dark); font-weight: 700; margin-bottom: 6px;
+  }
+  .card-head h1 { margin: 0; font-size: 26px; font-weight: 600; letter-spacing: -.01em; }
+  .card-head p { margin: 6px 0 0; font-size: 13px; color: var(--ink-soft); }
+  form { padding: 26px 28px 30px; }
+  .field { margin-bottom: 16px; }
+  label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; font-family: -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .req { color: var(--danger); }
+  .opt { font-weight: 400; color: var(--ink-soft); }
+  input[type=text], input[type=tel], input[type=email], input[type=date],
+  input[type=time], input[type=number], select, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fffdfa;
+    color: var(--ink);
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--gold); outline-offset: 1px; border-color: var(--gold);
+  }
+  textarea { resize: vertical; min-height: 64px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .seating { display: flex; gap: 8px; }
+  .seat-opt {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+    border: 1px solid var(--line); border-radius: 8px; padding: 9px 8px;
+    font-size: 13px; cursor: pointer; font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .seat-opt input { accent-color: var(--gold); }
+  .seat-opt:hover { border-color: var(--gold); }
+  .error-msg { display: none; color: var(--danger); font-size: 12px; margin-top: 5px; font-family: -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .field-error input, .field-error select, .field-error textarea { border-color: var(--danger); background: var(--danger-bg); }
+  .field-error .seating { outline: 1px solid var(--danger); border-radius: 8px; }
+  .field-error .error-msg { display: block; }
+  button[type=submit] {
+    width: 100%; margin-top: 6px;
+    background: var(--gold); color: #fff; border: none;
+    padding: 13px; font-size: 15px; font-weight: 700; letter-spacing: .02em;
+    border-radius: 8px; cursor: pointer;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  button[type=submit]:hover { background: var(--gold-dark); }
+  .result { margin-top: 18px; border-radius: 8px; padding: 14px 16px; font-size: 14px; font-family: -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .result h2 { margin: 0 0 6px; font-size: 14px; }
+  .result ul { margin: 0; padding-left: 20px; }
+  .result.pass { background: var(--ok-bg); border: 1px solid var(--ok); color: var(--ok); }
+  .result.fail { background: var(--danger-bg); border: 1px solid var(--danger); color: var(--danger); }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-head">
+      <div class="brand">Olive &amp; Ember</div>
+      <h1>Reserve a Table</h1>
+      <p>Wood-fired Mediterranean · Open Tues–Sun</p>
+    </div>
+
+    <form id="reservation-form" novalidate>
+      <div class="field">
+        <label for="name">Name <span class="req">*</span></label>
+        <input type="text" id="name" name="name" autocomplete="name">
+        <div class="error-msg" id="name-err">Please enter your name.</div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="phone">Phone <span class="req">*</span></label>
+          <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="(555) 123-4567">
+          <div class="error-msg" id="phone-err">Enter a valid phone number.</div>
+        </div>
+        <div class="field">
+          <label for="email">Email <span class="req">*</span></label>
+          <input type="email" id="email" name="email" autocomplete="email">
+          <div class="error-msg" id="email-err">Enter a valid email address.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="reservation-date">Date <span class="req">*</span></label>
+          <input type="date" id="reservation-date" name="reservation_date">
+          <div class="error-msg" id="reservation-date-err">Choose today or a future date.</div>
+        </div>
+        <div class="field">
+          <label for="reservation-time">Time <span class="req">*</span></label>
+          <input type="time" id="reservation-time" name="reservation_time">
+          <div class="error-msg" id="reservation-time-err">Choose a time.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="party-size">Party size <span class="req">*</span></label>
+          <input type="number" id="party-size" name="party_size" min="1" max="12" step="1" placeholder="2">
+          <div class="error-msg" id="party-size-err">Party size must be between 1 and 12.</div>
+        </div>
+        <div class="field">
+          <label for="occasion">Occasion <span class="req">*</span></label>
+          <select id="occasion" name="occasion">
+            <option value="" selected disabled>Select…</option>
+            <option value="birthday">Birthday</option>
+            <option value="anniversary">Anniversary</option>
+            <option value="business">Business</option>
+          </select>
+          <div class="error-msg" id="occasion-err">Select an occasion.</div>
+        </div>
+      </div>
+
+      <div class="field" id="seating-field">
+        <label>Seating preference <span class="req">*</span></label>
+        <div class="seating" role="radiogroup" aria-label="Seating preference">
+          <label class="seat-opt"><input type="radio" name="seating" value="indoor"> Indoor</label>
+          <label class="seat-opt"><input type="radio" name="seating" value="outdoor"> Outdoor</label>
+          <label class="seat-opt"><input type="radio" name="seating" value="bar"> Bar</label>
+        </div>
+        <div class="error-msg" id="seating-err">Select a seating preference.</div>
+      </div>
+
+      <div class="field">
+        <label for="special-requests">Special requests <span class="opt">(optional)</span></label>
+        <textarea id="special-requests" name="special_requests" placeholder="Allergies, high chair, celebration notes…"></textarea>
+        <div class="error-msg" id="special-requests-err"></div>
+      </div>
+
+      <button type="submit">Confirm Reservation</button>
+
+      <div id="result" class="result" role="status" aria-live="polite" hidden></div>
+    </form>
+  </div>
+
+  <script>
+    (function () {
+      var form = document.getElementById('reservation-form');
+      var result = document.getElementById('result');
+      var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      function val(id) { return (document.getElementById(id).value || '').trim(); }
+
+      function markError(fieldId, wrapperId) {
+        var wrap = wrapperId ? document.getElementById(wrapperId) : null;
+        if (!wrap) {
+          var el = document.getElementById(fieldId);
+          wrap = el ? (el.closest('.field') || el.parentElement) : null;
+        }
+        if (wrap) wrap.classList.add('field-error');
+      }
+
+      function clearErrors() {
+        form.querySelectorAll('.field-error').forEach(function (n) { n.classList.remove('field-error'); });
+      }
+
+      function todayStr() {
+        var d = new Date();
+        var m = String(d.getMonth() + 1).padStart(2, '0');
+        var day = String(d.getDate()).padStart(2, '0');
+        return d.getFullYear() + '-' + m + '-' + day;
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearErrors();
+        var failures = [];
+
+        function fail(fieldId, message, wrapperId) {
+          failures.push({ message: message });
+          markError(fieldId, wrapperId);
+        }
+
+        if (!val('name')) fail('name', 'Name is required.');
+
+        var phone = val('phone');
+        if (!phone) fail('phone', 'Phone number is required.');
+        else if (phone.replace(/\D/g, '').length < 10) fail('phone', 'Enter a valid phone number (at least 10 digits).');
+
+        var email = val('email');
+        if (!email) fail('email', 'Email is required.');
+        else if (!emailRe.test(email)) fail('email', 'Enter a valid email address.');
+
+        var date = val('reservation-date');
+        if (!date) fail('reservation-date', 'Reservation date is required.');
+        else if (isNaN(new Date(date).getTime())) fail('reservation-date', 'Enter a valid date.');
+        else if (date < todayStr()) fail('reservation-date', 'Reservation date must be today or later.');
+
+        if (!val('reservation-time')) fail('reservation-time', 'Reservation time is required.');
+
+        var partyRaw = val('party-size');
+        if (!partyRaw) fail('party-size', 'Party size is required.');
+        else {
+          var party = Number(partyRaw);
+          if (!Number.isInteger(party) || party < 1 || party > 12)
+            fail('party-size', 'Party size must be between 1 and 12.');
+        }
+
+        if (!val('occasion')) fail('occasion', 'Select an occasion.');
+
+        if (!form.querySelector('input[name="seating"]:checked'))
+          fail('seating', 'Select a seating preference.', 'seating-field');
+
+        if (failures.length) {
+          result.className = 'result fail';
+          var items = failures.map(function (f) { return '<li>' + f.message + '</li>'; }).join('');
+          result.innerHTML = '<h2>✗ Submission failed — ' + failures.length +
+            ' issue(s)</h2><ul>' + items + '</ul>';
+        } else {
+          result.className = 'result pass';
+          result.innerHTML = '✓ Submission passed — all fields valid.';
+        }
+        result.hidden = false;
+        result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    })();
+  </script>
+</body>
+</html>

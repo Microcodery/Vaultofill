@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meridian Trust Bank — Personal Loan Application</title>
+  <style>
+    :root {
+      --brand: #1e3a5f;
+      --brand-dark: #14263f;
+      --accent: #c19a4b;
+      --ink: #1c2733;
+      --muted: #64748b;
+      --line: #cbd5e1;
+      --ok: #15803d;
+      --ok-bg: #dcfce7;
+      --bad: #b91c1c;
+      --bad-bg: #fee2e2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", "Segoe UI", serif;
+      background: #eef1f5;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .page { max-width: 820px; margin: 0 auto; padding: 24px 20px 64px; }
+    header.brand {
+      background: var(--brand);
+      color: #fff;
+      padding: 24px 28px;
+      border-top: 4px solid var(--accent);
+      border-radius: 6px 6px 0 0;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .crest {
+      width: 48px; height: 48px; border: 2px solid var(--accent); border-radius: 6px;
+      display: grid; place-items: center; font-family: Georgia, serif;
+      font-weight: 700; font-size: 20px; color: var(--accent);
+    }
+    header.brand h1 { margin: 0; font-size: 22px; letter-spacing: .3px; }
+    header.brand p { margin: 3px 0 0; opacity: .85; font-size: 13px; font-family: Arial, sans-serif; }
+    form {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      padding: 24px 28px 28px;
+    }
+    .intro { font-family: Arial, sans-serif; font-size: 13px; color: var(--muted); margin: 0 0 18px; }
+    table.form-table { width: 100%; border-collapse: collapse; }
+    table.form-table caption {
+      text-align: left; font-weight: 700; color: var(--brand);
+      font-size: 15px; padding: 10px 0 8px; border-bottom: 2px solid var(--accent);
+      margin-bottom: 6px;
+    }
+    table.form-table th, table.form-table td { padding: 9px 8px; vertical-align: top; text-align: left; }
+    table.form-table th {
+      width: 38%; font-weight: 600; font-size: 14px; font-family: Arial, sans-serif;
+      color: var(--ink); white-space: nowrap;
+    }
+    table.form-table th .req { color: var(--bad); }
+    table.form-table tr { border-bottom: 1px solid #eef1f5; }
+    input[type=text], input[type=number], input[type=date], select {
+      width: 100%; max-width: 340px; padding: 8px 10px; font-size: 14px;
+      font-family: Arial, sans-serif; border: 1px solid var(--line);
+      border-radius: 5px; background: #fff; color: var(--ink);
+    }
+    input:focus, select:focus { outline: 2px solid var(--brand); border-color: var(--brand); }
+    .sensitive-tag {
+      display: inline-block; font-family: Arial, sans-serif; font-size: 10px; font-weight: 700;
+      color: var(--accent); border: 1px solid var(--accent); border-radius: 3px;
+      padding: 1px 5px; margin-left: 6px; vertical-align: middle; letter-spacing: .5px;
+    }
+    .consent-cell label { display: flex; align-items: flex-start; gap: 9px; font-family: Arial, sans-serif; font-size: 14px; }
+    .consent-cell input { margin-top: 3px; width: 17px; height: 17px; accent-color: var(--brand); }
+    .error-msg { display: block; color: var(--bad); font-size: 12px; font-family: Arial, sans-serif; margin-top: 5px; }
+    .field-error input, .field-error select { border-color: var(--bad); background: #fff6f6; }
+    .actions { margin-top: 22px; }
+    button[type=submit] {
+      background: var(--brand); color: #fff; border: none;
+      padding: 12px 30px; font-size: 15px; font-weight: 700; font-family: Arial, sans-serif;
+      border-radius: 6px; cursor: pointer;
+    }
+    button[type=submit]:hover { background: var(--brand-dark); }
+    .result {
+      margin-top: 22px; padding: 16px 18px; border-radius: 8px; font-size: 14px;
+      font-family: Arial, sans-serif; border: 1px solid transparent;
+    }
+    .result h2 { margin: 0 0 6px; font-size: 16px; }
+    .result ul { margin: 6px 0 0; padding-left: 20px; }
+    .result.pass { background: var(--ok-bg); border-color: #86efac; color: var(--ok); }
+    .result.fail { background: var(--bad-bg); border-color: #fca5a5; color: var(--bad); }
+    @media (max-width: 640px) {
+      table.form-table th, table.form-table td { display: block; width: 100%; white-space: normal; }
+      table.form-table th { padding-bottom: 2px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="brand">
+      <div class="crest">MT</div>
+      <div>
+        <h1>Meridian Trust Bank</h1>
+        <p>Personal Loan Application · Member FDIC · Equal Housing Lender</p>
+      </div>
+    </header>
+
+    <form id="loan-form" novalidate>
+      <p class="intro">All fields are used solely to evaluate your application. Fields marked
+        <span style="color:var(--bad)">*</span> are required. Sensitive information is encrypted in transit.</p>
+
+      <table class="form-table">
+        <caption>Applicant &amp; Financial Details</caption>
+        <tbody>
+          <tr>
+            <th scope="row"><label for="applicant-name">Applicant full name <span class="req">*</span></label></th>
+            <td>
+              <input type="text" id="applicant-name" name="applicant_name" autocomplete="name">
+              <span class="error-msg" data-for="applicant-name"></span>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row"><label for="ssn">Social Security Number <span class="req">*</span><span class="sensitive-tag">SENSITIVE</span></label></th>
+            <td>
+              <input type="text" id="ssn" name="ssn" inputmode="numeric" placeholder="###-##-####" maxlength="11" autocomplete="off">
+              <span class="error-msg" data-for="ssn"></span>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row"><label for="date-of-birth">Date of birth <span class="req">*</span></label></th>
+            <td>
+              <input type="date" id="date-of-birth" name="date_of_birth">
+              <span class="error-msg" data-for="date-of-birth"></span>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row"><label for="annual-income">Annual income (USD) <span class="req">*</span><span class="sensitive-tag">SENSITIVE</span></label></th>
+            <td>
+              <input type="number" id="annual-income" name="annual_income" min="1" step="1" placeholder="e.g. 85000">
+              <span class="error-msg" data-for="annual-income"></span>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row"><label for="employment-status">Employment status <span class="req">*</span></label></th>
+            <td>
+              <select id="employment-status" name="employment_status">
+                <option value="">Select…</option>
+                <option value="employed">Employed (full-time)</option>
+                <option value="part-time">Employed (part-time)</option>
+                <option value="self-employed">Self-employed</option>
+                <option value="retired">Retired</option>
+                <option value="unemployed">Unemployed</option>
+              </select>
+              <span class="error-msg" data-for="employment-status"></span>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row"><label for="employer-name">Employer name <span class="req">*</span></label></th>
+            <td>
+              <input type="text" id="employer-name" name="employer_name" autocomplete="organization">
+              <span class="error-msg" data-for="employer-name"></span>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row"><label for="loan-amount">Loan amount requested (USD) <span class="req">*</span></label></th>
+            <td>
+              <input type="number" id="loan-amount" name="loan_amount" min="1" step="1" placeholder="e.g. 15000">
+              <span class="error-msg" data-for="loan-amount"></span>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row"><label for="loan-purpose">Loan purpose <span class="req">*</span></label></th>
+            <td>
+              <select id="loan-purpose" name="loan_purpose">
+                <option value="">Select…</option>
+                <option value="debt-consolidation">Debt consolidation</option>
+                <option value="home-improvement">Home improvement</option>
+                <option value="auto">Auto purchase</option>
+                <option value="medical">Medical expenses</option>
+                <option value="major-purchase">Major purchase</option>
+                <option value="other">Other</option>
+              </select>
+              <span class="error-msg" data-for="loan-purpose"></span>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row"><label for="term-months">Term (months) <span class="req">*</span></label></th>
+            <td>
+              <select id="term-months" name="term_months">
+                <option value="">Select…</option>
+                <option value="12">12 months</option>
+                <option value="24">24 months</option>
+                <option value="36">36 months</option>
+                <option value="48">48 months</option>
+                <option value="60">60 months</option>
+              </select>
+              <span class="error-msg" data-for="term-months"></span>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Credit check consent <span class="req">*</span></th>
+            <td class="consent-cell">
+              <label>
+                <input type="checkbox" id="credit-consent" name="credit_consent" value="yes">
+                I authorize Meridian Trust Bank to obtain my credit report to evaluate this application.
+              </label>
+              <span class="error-msg" data-for="credit-consent"></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="actions">
+        <button type="submit">Submit application</button>
+      </div>
+
+      <div id="result" class="result" role="status" aria-live="polite" hidden></div>
+    </form>
+  </div>
+
+  <script>
+    (function () {
+      var form = document.getElementById('loan-form');
+      var result = document.getElementById('result');
+      var ssnRe = /^\d{3}-\d{2}-\d{4}$/;
+
+      function clearErrors() {
+        form.querySelectorAll('.field-error').forEach(function (el) { el.classList.remove('field-error'); });
+        form.querySelectorAll('.error-msg').forEach(function (el) { el.textContent = ''; });
+      }
+
+      function fail(failures, id, message) {
+        failures.push({ fieldId: id, message: message });
+        var msg = form.querySelector('.error-msg[data-for="' + id + '"]');
+        if (msg) msg.textContent = message;
+        var ctrl = document.getElementById(id);
+        var cell = ctrl ? ctrl.closest('td') || ctrl : null;
+        if (cell) cell.classList.add('field-error');
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearErrors();
+        var f = [];
+
+        var name = document.getElementById('applicant-name');
+        if (!name.value.trim()) fail(f, 'applicant-name', 'Applicant name is required.');
+
+        var ssn = document.getElementById('ssn');
+        if (!ssn.value.trim()) fail(f, 'ssn', 'SSN is required.');
+        else if (!ssnRe.test(ssn.value.trim())) fail(f, 'ssn', 'SSN must be in ###-##-#### format.');
+
+        var dob = document.getElementById('date-of-birth');
+        if (!dob.value) fail(f, 'date-of-birth', 'Date of birth is required.');
+
+        var income = document.getElementById('annual-income');
+        var incomeVal = income.value.trim();
+        if (!incomeVal) fail(f, 'annual-income', 'Annual income is required.');
+        else if (isNaN(Number(incomeVal)) || Number(incomeVal) <= 0) fail(f, 'annual-income', 'Annual income must be greater than 0.');
+
+        var emp = document.getElementById('employment-status');
+        if (!emp.value) fail(f, 'employment-status', 'Select an employment status.');
+
+        var employer = document.getElementById('employer-name');
+        if (!employer.value.trim()) fail(f, 'employer-name', 'Employer name is required.');
+
+        var amount = document.getElementById('loan-amount');
+        var amountVal = amount.value.trim();
+        if (!amountVal) fail(f, 'loan-amount', 'Loan amount is required.');
+        else if (isNaN(Number(amountVal)) || Number(amountVal) <= 0) fail(f, 'loan-amount', 'Loan amount must be greater than 0.');
+
+        var purpose = document.getElementById('loan-purpose');
+        if (!purpose.value) fail(f, 'loan-purpose', 'Select a loan purpose.');
+
+        var term = document.getElementById('term-months');
+        if (!term.value) fail(f, 'term-months', 'Select a loan term.');
+
+        var consent = document.getElementById('credit-consent');
+        if (!consent.checked) fail(f, 'credit-consent', 'You must consent to a credit check.');
+
+        if (f.length) {
+          result.className = 'result fail';
+          result.innerHTML = '<h2>✗ Submission failed — ' + f.length + ' issue(s)</h2>';
+          var ul = document.createElement('ul');
+          f.forEach(function (item) {
+            var li = document.createElement('li');
+            li.textContent = item.message;
+            ul.appendChild(li);
+          });
+          result.appendChild(ul);
+        } else {
+          result.className = 'result pass';
+          result.textContent = '✓ Submission passed — all fields valid.';
+        }
+        result.hidden = false;
+        result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "_comment": "Open-set eval fixtures: novel concepts NOT in the 25-label seed set, each phrased several ways (should converge to ONE invented label), plus non-fillable fields (should be UNKNOWN). Used by scripts/eval-labels.mjs; scoring is unit-tested in scoreOpenSet.test.ts.",
+  "convergence": [
+    { "concept": "favorite color", "phrasings": ["What is your favorite color?", "Preferred colour", "Which color do you like best?", "Favourite colour"] },
+    { "concept": "vehicle make", "phrasings": ["Vehicle make", "Make of your car", "Car manufacturer", "Automobile brand"] },
+    { "concept": "dietary restriction", "phrasings": ["Any dietary restrictions?", "Dietary needs", "Food allergies or restrictions", "Special dietary requirements"] },
+    { "concept": "how heard about us", "phrasings": ["How did you hear about us?", "Where did you find us?", "Referral source", "How were you referred to us?"] },
+    { "concept": "t-shirt size", "phrasings": ["T-shirt size", "Shirt size", "Preferred tee size", "Apparel size"] },
+    { "concept": "years of experience", "phrasings": ["Years of experience", "How many years have you worked in this field?", "Total professional experience (years)", "Experience level in years"] },
+    { "concept": "expected salary", "phrasings": ["Expected salary", "Desired compensation", "Salary expectations", "What pay range are you looking for?"] },
+    { "concept": "pet name", "phrasings": ["Pet's name", "What is your pet called?", "Name of your animal companion", "Your pet's name"] },
+    { "concept": "emergency contact name", "phrasings": ["Emergency contact name", "Who should we contact in an emergency?", "Name of emergency contact", "In case of emergency, contact"] },
+    { "concept": "reason for applying", "phrasings": ["Why do you want this job?", "Reason for applying", "What draws you to this role?", "Tell us why you're interested in this position"] }
+  ],
+  "nonFillable": ["Enter the characters shown above", "Search", "Type the code from the image", "Search products", "Please solve the captcha", "Sort by", "Filter results", "Sort results by"],
+  "fillableExtras": ["Passport number", "Postal code", "Company name", "Date of birth"]
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feast &amp; Co — Catering Order</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Helvetica Neue", Arial, sans-serif; background: #fff8f2; color: #2a211a; line-height: 1.5; }
+    .page { max-width: 700px; margin: 0 auto; padding: 34px 20px 60px; }
+    h1 { font-size: 24px; margin: 0 0 4px; color: #c4622d; }
+    .sub { color: #6b5c4f; margin: 0 0 22px; }
+    form { background: #fff; border: 1px solid #ecd9c8; border-radius: 10px; padding: 24px; }
+    .field { margin-bottom: 18px; }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .row .field { flex: 1 1 200px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    input, select { width: 100%; padding: 10px 12px; border: 1px solid #e0cdbb; border-radius: 8px; font-size: 15px; }
+    button { padding: 12px 26px; font-size: 15px; color: #fff; background: #c4622d; border: none; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Feast &amp; Co Catering</h1>
+    <p class="sub">Place your event catering order.</p>
+    <form id="catering-form" novalidate>
+      <div class="field">
+        <label for="full-name">Full name</label>
+        <input type="text" id="full-name" name="full_name" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="phone">Phone number</label>
+        <input type="tel" id="phone" name="phone" autocomplete="tel">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="event-date">Event date</label>
+          <input type="date" id="event-date" name="event_date">
+        </div>
+        <div class="field">
+          <label for="headcount">Headcount</label>
+          <input type="number" id="headcount" name="headcount" min="1" step="1">
+        </div>
+      </div>
+      <div class="field">
+        <label for="menu">Menu package</label>
+        <select id="menu" name="menu">
+          <option value="">Choose a package…</option>
+          <option value="buffet">Buffet</option>
+          <option value="plated">Plated dinner</option>
+          <option value="boxed">Boxed lunches</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="dietary">Dietary restrictions</label>
+        <input type="text" id="dietary" name="dietary" placeholder="Vegetarian, nut-free…">
+      </div>
+      <button type="submit">Submit order</button>
+    </form>
+  </div>
+</body>
+</html>

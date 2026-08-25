@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kingsley Foundation — Merit Scholarship Application</title>
+  <style>
+    :root {
+      --brand: #5b2a86;
+      --brand-dark: #3f1d5e;
+      --brand-light: #efe7f6;
+      --accent: #17867a;
+      --bg: #f6f4f9;
+      --text: #23202a;
+      --muted: #6a6473;
+      --border: #d3cbde;
+      --error: #b3261e;
+      --error-bg: #fce9e8;
+      --ok: #1f7a44;
+      --ok-bg: #e7f6ec;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: Georgia, "Times New Roman", serif; line-height: 1.55;
+    }
+    .page { max-width: 800px; margin: 0 auto; padding: 0 20px 60px; }
+    header.brand {
+      background: var(--brand); color: #fff; padding: 30px 0;
+      border-bottom: 5px solid var(--accent); margin-bottom: 30px;
+    }
+    header.brand .page { padding-bottom: 0; }
+    .crest {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 50px; height: 50px; border: 2px solid var(--accent); border-radius: 6px;
+      font-size: 26px; margin-right: 14px; vertical-align: middle;
+    }
+    header h1 { display: inline-block; margin: 0; font-size: 24px; vertical-align: middle; }
+    header p { margin: 10px 0 0; font-size: 14px; opacity: 0.9; font-family: Arial, sans-serif; }
+    .card {
+      background: #fff; border: 1px solid var(--border); border-radius: 10px;
+      padding: 30px; box-shadow: 0 2px 10px rgba(91, 42, 134, 0.07);
+    }
+    .card > h2 { margin-top: 0; color: var(--brand-dark); }
+    .intro { color: var(--muted); margin-bottom: 26px; font-family: Arial, sans-serif; font-size: 15px; }
+    fieldset {
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 18px 20px 6px; margin: 0 0 24px;
+    }
+    fieldset legend {
+      font-family: Arial, sans-serif; font-weight: 700; font-size: 15px;
+      color: var(--brand); padding: 0 8px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    fieldset.nested {
+      background: var(--brand-light); border-color: #cbb9e0; margin-top: 8px;
+    }
+    fieldset.nested legend { color: var(--brand-dark); }
+    .field { margin-bottom: 18px; }
+    .row { display: flex; gap: 18px; flex-wrap: wrap; }
+    .row .field { flex: 1 1 220px; }
+    label { display: block; font-family: Arial, sans-serif; font-weight: 600; font-size: 13px; margin-bottom: 6px; }
+    .req { color: var(--accent); }
+    input[type=text], input[type=email], input[type=date], input[type=number],
+    input[type=file], textarea {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+      border-radius: 7px; font-size: 15px; font-family: Arial, sans-serif;
+      background: #fff; color: var(--text);
+    }
+    input:focus, textarea:focus {
+      outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-light);
+    }
+    textarea { resize: vertical; min-height: 120px; }
+    .hint { font-size: 12px; color: var(--muted); margin-top: 4px; font-family: Arial, sans-serif; }
+    .consent { display: flex; gap: 10px; align-items: flex-start; }
+    .consent input { margin-top: 4px; }
+    .consent label { font-weight: 400; margin-bottom: 0; }
+    .field-error input, .field-error textarea,
+    input.field-error, textarea.field-error {
+      border-color: var(--error); background: var(--error-bg);
+    }
+    .error-msg {
+      display: block; color: var(--error); font-size: 12px; margin-top: 5px;
+      font-family: Arial, sans-serif;
+    }
+    .actions { margin-top: 6px; }
+    button[type=submit] {
+      background: var(--brand); color: #fff; border: none; padding: 13px 28px;
+      font-size: 16px; font-weight: 700; border-radius: 7px; cursor: pointer;
+      font-family: Arial, sans-serif;
+    }
+    button[type=submit]:hover { background: var(--brand-dark); }
+    .result {
+      margin-top: 24px; padding: 16px 20px; border-radius: 9px;
+      border: 1px solid transparent; font-family: Arial, sans-serif;
+    }
+    .result h3 { margin: 0 0 8px; font-size: 17px; }
+    .result ul { margin: 0; padding-left: 20px; }
+    .result.pass { background: var(--ok-bg); border-color: var(--ok); color: var(--ok); }
+    .result.fail { background: var(--error-bg); border-color: var(--error); color: var(--error); }
+  </style>
+</head>
+<body>
+  <header class="brand">
+    <div class="page">
+      <span class="crest" aria-hidden="true">&#127891;</span>
+      <h1>Kingsley Foundation</h1>
+      <p>Merit Scholarship Program &middot; Application for the 2026&ndash;2027 academic year</p>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="card">
+      <h2>Scholarship Application</h2>
+      <p class="intro">Please complete every section. Fields marked <span class="req">*</span> are required. Applications are reviewed on a rolling basis.</p>
+
+      <form id="scholarship-form" novalidate>
+
+        <fieldset>
+          <legend>Personal Information</legend>
+          <div class="row">
+            <div class="field">
+              <label for="first-name">First name <span class="req">*</span></label>
+              <input type="text" id="first-name" name="first_name" autocomplete="given-name">
+              <span class="error-msg" id="first-name-error"></span>
+            </div>
+            <div class="field">
+              <label for="last-name">Last name <span class="req">*</span></label>
+              <input type="text" id="last-name" name="last_name" autocomplete="family-name">
+              <span class="error-msg" id="last-name-error"></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="email">Email address <span class="req">*</span></label>
+              <input type="email" id="email" name="email" autocomplete="email">
+              <span class="error-msg" id="email-error"></span>
+            </div>
+            <div class="field">
+              <label for="date-of-birth">Date of birth <span class="req">*</span></label>
+              <input type="date" id="date-of-birth" name="date_of_birth" autocomplete="bday">
+              <span class="error-msg" id="date-of-birth-error"></span>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Academic Record</legend>
+          <div class="row">
+            <div class="field">
+              <label for="school-name">School / institution name <span class="req">*</span></label>
+              <input type="text" id="school-name" name="school_name" autocomplete="organization">
+              <span class="error-msg" id="school-name-error"></span>
+            </div>
+            <div class="field">
+              <label for="major">Intended major <span class="req">*</span></label>
+              <input type="text" id="major" name="major">
+              <span class="error-msg" id="major-error"></span>
+            </div>
+          </div>
+
+          <fieldset class="nested">
+            <legend>Grades &amp; Timeline</legend>
+            <div class="row">
+              <div class="field">
+                <label for="gpa">Cumulative GPA <span class="req">*</span></label>
+                <input type="number" id="gpa" name="gpa" min="0" max="4" step="0.01">
+                <div class="hint">On a 4.0 scale (0.00&ndash;4.00).</div>
+                <span class="error-msg" id="gpa-error"></span>
+              </div>
+              <div class="field">
+                <label for="graduation-year">Expected graduation year <span class="req">*</span></label>
+                <input type="number" id="graduation-year" name="graduation_year" min="1990" max="2100" step="1">
+                <span class="error-msg" id="graduation-year-error"></span>
+              </div>
+            </div>
+          </fieldset>
+        </fieldset>
+
+        <fieldset>
+          <legend>Essay &amp; Documents</legend>
+          <div class="field">
+            <label for="essay">Personal essay <span class="req">*</span></label>
+            <textarea id="essay" name="essay" placeholder="In at least 50 characters, describe your goals and why this scholarship matters to you&hellip;"></textarea>
+            <div class="hint">Minimum 50 characters.</div>
+            <span class="error-msg" id="essay-error"></span>
+          </div>
+          <div class="field">
+            <label for="transcript">Official transcript <span class="req">*</span></label>
+            <input type="file" id="transcript" name="transcript" accept=".pdf,.doc,.docx,image/*">
+            <div class="hint">PDF, Word, or image file.</div>
+            <span class="error-msg" id="transcript-error"></span>
+          </div>
+          <div class="field">
+            <div class="consent">
+              <input type="checkbox" id="certify" name="certify" value="certified">
+              <label for="certify">I certify that all information provided is accurate and complete. <span class="req">*</span></label>
+            </div>
+            <span class="error-msg" id="certify-error"></span>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button type="submit">Submit application</button>
+        </div>
+
+        <div id="result" class="result" role="status" aria-live="polite" hidden></div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var form = document.getElementById('scholarship-form');
+      var result = document.getElementById('result');
+      var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      function fieldOf(id) { return document.getElementById(id); }
+      function wrapper(el) { return el.closest('.field') || el; }
+
+      function clearErrors() {
+        form.querySelectorAll('.field-error').forEach(function (el) { el.classList.remove('field-error'); });
+        form.querySelectorAll('.error-msg').forEach(function (el) { el.textContent = ''; });
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearErrors();
+        var failures = [];
+
+        function fail(fieldId, message, control) {
+          failures.push({ fieldId: fieldId, message: message });
+          var el = control || fieldOf(fieldId);
+          if (el) wrapper(el).classList.add('field-error');
+          var msg = document.getElementById(fieldId + '-error');
+          if (msg) msg.textContent = message;
+        }
+
+        function required(id, message) {
+          var el = fieldOf(id);
+          if (!el.value.trim()) { fail(id, message); return false; }
+          return true;
+        }
+
+        required('first-name', 'First name is required.');
+        required('last-name', 'Last name is required.');
+
+        var email = fieldOf('email');
+        if (!email.value.trim()) fail('email', 'Email is required.');
+        else if (!emailRe.test(email.value.trim())) fail('email', 'Enter a valid email address.');
+
+        required('date-of-birth', 'Date of birth is required.');
+        required('school-name', 'School name is required.');
+        required('major', 'Intended major is required.');
+
+        var gpa = fieldOf('gpa');
+        var gpaVal = parseFloat(gpa.value);
+        if (!gpa.value.trim()) fail('gpa', 'GPA is required.');
+        else if (isNaN(gpaVal) || gpaVal < 0 || gpaVal > 4) fail('gpa', 'GPA must be between 0.00 and 4.00.');
+
+        var gradYear = fieldOf('graduation-year');
+        var gradVal = parseInt(gradYear.value, 10);
+        if (!gradYear.value.trim()) fail('graduation-year', 'Graduation year is required.');
+        else if (isNaN(gradVal) || gradVal < 1990 || gradVal > 2100) fail('graduation-year', 'Enter a valid graduation year.');
+
+        var essay = fieldOf('essay');
+        var essayVal = essay.value.trim();
+        if (!essayVal) fail('essay', 'Essay is required.');
+        else if (essayVal.length < 50) fail('essay', 'Essay must be at least 50 characters (currently ' + essayVal.length + ').');
+
+        var transcript = fieldOf('transcript');
+        if (!transcript.files || transcript.files.length === 0) fail('transcript', 'Please attach your transcript.');
+
+        var certify = fieldOf('certify');
+        if (!certify.checked) fail('certify', 'You must certify that your information is accurate.');
+
+        if (failures.length) {
+          var items = failures.map(function (f) { return '<li>' + f.message + '</li>'; }).join('');
+          result.className = 'result fail';
+          result.innerHTML = '<h3>&#10007; Submission failed &mdash; ' + failures.length +
+            ' issue(s)</h3><ul>' + items + '</ul>';
+        } else {
+          result.className = 'result pass';
+          result.innerHTML = '<h3>&#10003; Submission passed &mdash; all fields valid.</h3>';
+        }
+        result.hidden = false;
+        result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    })();
+  </script>
+</body>
+</html>

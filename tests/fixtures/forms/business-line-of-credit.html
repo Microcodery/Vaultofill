@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meridian Bank — Business Line of Credit</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: #f6f7f9; color: #202733; line-height: 1.5; }
+    .container { max-width: 700px; margin: 0 auto; padding: 34px 20px 60px; }
+    h1 { font-size: 22px; margin: 0 0 4px; color: #0b3d91; }
+    .lede { color: #5b6470; margin: 0 0 24px; }
+    form { background: #fff; border: 1px solid #d6dce4; border-radius: 10px; padding: 26px; }
+    .field { margin-bottom: 18px; }
+    .two { display: flex; gap: 16px; flex-wrap: wrap; }
+    .two .field { flex: 1 1 200px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    input { width: 100%; padding: 10px 12px; border: 1px solid #c9d1db; border-radius: 8px; font-size: 15px; }
+    button { padding: 12px 26px; font-size: 15px; font-weight: 600; color: #fff; background: #0b3d91; border: none; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Meridian Bank</h1>
+    <p class="lede">Business Line of Credit — Application</p>
+    <form id="loc-form" novalidate>
+      <div class="field">
+        <label for="applicant">Applicant name</label>
+        <input type="text" id="applicant" name="applicant" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="company">Company name</label>
+        <input type="text" id="company" name="company" autocomplete="organization">
+      </div>
+      <div class="field">
+        <label for="tax-id">Federal Tax ID</label>
+        <input type="text" id="tax-id" name="tax_id" placeholder="XX-XXXXXXX">
+      </div>
+      <div class="two">
+        <div class="field">
+          <label for="gross-income">Gross annual income</label>
+          <input type="number" id="gross-income" name="gross_income" min="0" step="1000">
+        </div>
+        <div class="field">
+          <label for="years-op">Years in operation</label>
+          <input type="number" id="years-op" name="years_op" min="0" step="1">
+        </div>
+      </div>
+      <div class="two">
+        <div class="field">
+          <label for="requested">Requested amount</label>
+          <input type="number" id="requested" name="requested" min="0" step="1000">
+        </div>
+        <div class="field">
+          <label for="phone">Business phone</label>
+          <input type="tel" id="phone" name="phone" autocomplete="tel">
+        </div>
+      </div>
+      <button type="submit">Request credit line</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vaultofill</title>
+    <style>
+      /* Neutralise the browser/OS accent (KDE's is purple) on native controls —
+         checkboxes/radios (accent-color), text selection, and focus rings — so
+         nothing inherits the system accent. */
+      :root { color-scheme: light dark; accent-color: #6e7781; }
+      ::selection { background: #b6bdc6; color: #1f2328; }
+      input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible {
+        outline: 2px solid #6e7781; outline-offset: 1px;
+      }
+      body {
+        font: 14px/1.4 system-ui, sans-serif;
+        margin: 0;
+        padding: 12px;
+        padding-bottom: 52px; /* initial clearance for the fixed footer; JS keeps it in sync with the footer's height */
+        color: #1f2328;
+        background: #fff;
+      }
+      /* Fixed status footer: run status + model-load progress live here so they
+         never reflow the review above. Invisible (no divider) when idle. */
+      #status-footer {
+        position: fixed; left: 0; right: 0; bottom: 0;
+        padding: 6px 12px;
+        background: #fff;
+        border-top: 1px solid transparent;
+        max-height: 40vh; overflow-y: auto;
+      }
+      #status-footer.has-status { border-top-color: #e1e4e8; }
+      .vof-work-status { font-size: 12px; color: #57606a; }
+      .vof-model-status { font-size: 11px; color: #8a929c; white-space: pre-wrap; overflow-wrap: anywhere; }
+      .vof-gpu-status { font-size: 11px; color: #8a929c; white-space: pre-wrap; overflow-wrap: anywhere; }
+      .vof-gpu-status.warn { color: #9a6700; font-weight: 600; }
+      #fill-button {
+        font: 600 13px system-ui, sans-serif;
+        padding: 8px 12px;
+        background: #4b5563;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        display: block;
+        margin: 0 auto 10px;
+        width: fit-content;
+      }
+      #fill-button:disabled { opacity: 0.6; cursor: default; }
+      .vof-placeholder { font-size: 13px; color: #57606a; padding: 16px 4px; text-align: center; }
+      /* Two-line row: [label · tier badge · ⋮] on top, full-width value below.
+         position:relative anchors the menu popover. */
+      .vof-row {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 6px 8px;
+        border-left: 4px solid transparent;
+        margin-bottom: 4px;
+        border-radius: 4px;
+      }
+      .vof-row-head { display: flex; align-items: center; gap: 6px; }
+      .vof-row label.vof-field-label { flex: 0 1 auto; min-width: 0; font-size: 12px; word-break: break-word; }
+      /* The vault label we matched the field to (why it filled). */
+      .vof-used-label { flex: none; font-size: 10px; color: #6e7781; background: rgba(139,148,158,0.15); border-radius: 10px; padding: 1px 6px; white-space: nowrap; }
+      .vof-used-label::before { content: "→ "; }
+      .vof-row-meta { flex: none; margin-left: auto; display: flex; align-items: center; gap: 6px; }
+      .vof-row input, .vof-row select, .vof-row textarea { padding: 4px 6px; font: inherit; min-width: 0; }
+      /* Value on its own line, full width, matching the page field. */
+      .vof-row .vof-value { width: 100%; box-sizing: border-box; }
+      .vof-row .vof-combo { width: 100%; display: flex; }
+      .vof-row .vof-combo input { flex: 1 1 auto; min-width: 0; }
+      .vof-row textarea { resize: vertical; min-height: 2.4em; }
+      .vof-row .vof-choices { display: flex; flex-direction: column; gap: 2px; }
+      .vof-choice { font-size: 12px; display: flex; align-items: center; gap: 4px; }
+      .vof-choice input { flex: none; padding: 0; min-width: 0; }
+      /* Cycling storage-tier badge (click to change); colour reflects the tier. */
+      .vof-tier-badge {
+        flex: none; cursor: pointer; font: 600 10px system-ui, sans-serif;
+        padding: 2px 6px; border-radius: 10px; border: 1px solid transparent; white-space: nowrap;
+        /* Constant width so cycling Permanent/Temporary/One-time doesn't reflow. */
+        min-width: 68px; text-align: center; box-sizing: border-box;
+      }
+      .vof-tier-badge[data-tier="stable"] { background: rgba(26,127,55,0.15); color: #1a7f37; border-color: rgba(26,127,55,0.35); }
+      .vof-tier-badge[data-tier="volatile"] { background: rgba(154,103,0,0.15); color: #9a6700; border-color: rgba(154,103,0,0.35); }
+      .vof-tier-badge[data-tier="ephemeral"] { background: rgba(139,148,158,0.15); color: #6e7781; border-color: rgba(139,148,158,0.35); }
+      /* Sensitive-field lock toggle (opt-in). */
+      .vof-sensitive { flex: none; cursor: pointer; background: none; border: none; font-size: 13px; line-height: 1; padding: 0 2px; }
+      /* ⋮ menu trigger + popover. */
+      .vof-menu-btn { flex: none; cursor: pointer; background: none; border: none; font-size: 16px; line-height: 1; padding: 0 4px; color: #6e7781; }
+      .vof-menu {
+        display: none; position: absolute; right: 8px; top: 100%; z-index: 10;
+        min-width: 180px; padding: 6px; margin-top: 2px;
+        background: #fff; border: 1px solid #d0d7de; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+      }
+      .vof-menu.open { display: block; }
+      .vof-menu-section { padding: 4px 2px; }
+      .vof-menu-section + .vof-menu-section { border-top: 1px solid #eaeef2; }
+      .vof-menu-heading { font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: #8b949e; margin-bottom: 3px; }
+      .vof-menu input.vof-new-variant, .vof-menu input.vof-new-label { width: 100%; font-size: 12px; padding: 3px 4px; }
+      .vof-menu-toggle { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+      .vof-menu-toggle input { flex: none; }
+      .vof-missing { border-left-color: #d1242f; background: rgba(209, 36, 47, 0.08); }
+      .vof-connected { border-left-color: #9a6700; background: rgba(154, 103, 0, 0.08); }
+      .vof-certain { border-left-color: #1a7f37; background: rgba(26, 127, 55, 0.08); }
+      .vof-pending { border-left-color: #8b949e; background: rgba(139, 148, 158, 0.06); opacity: 0.85; }
+      .vof-pending-mark { flex: none; font-size: 11px; font-style: italic; color: #8b949e; }
+      .vof-progress-note { font-size: 12px; color: #8b949e; margin: 8px 0 2px; }
+      .vof-actions { display: flex; gap: 8px; margin-top: 6px; }
+      #submit-button, #fill-only-button {
+        font: 600 13px system-ui, sans-serif;
+        padding: 8px 12px;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      #submit-button { background: #1a7f37; }
+      #fill-only-button { background: #6e7781; }
+      #submit-button:disabled, #fill-only-button:disabled { opacity: 0.6; cursor: default; }
+      /* Settings (manage saved values). */
+      #settings-button { font: 600 12px system-ui, sans-serif; padding: 6px 10px; margin-top: 8px; background: none; border: 1px solid #d0d7de; border-radius: 6px; cursor: pointer; color: inherit; }
+      #settings { margin-top: 8px; }
+      /* Settings tabs: Saved values / Learned fields live in their own tabs so long
+         lists don't bury the normal settings. */
+      .vof-tablist { display: flex; gap: 2px; border-bottom: 1px solid #d0d7de; margin-bottom: 10px; }
+      .vof-tab {
+        font: 600 12px system-ui, sans-serif; padding: 6px 10px; background: none; border: none;
+        border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; color: #57606a;
+      }
+      .vof-tab[aria-selected="true"] { color: inherit; border-bottom-color: #4b5563; }
+      .vof-tabpanel[hidden] { display: none; }
+      .vof-settings-empty { font-size: 12px; color: #8b949e; margin: 0 0 4px; }
+      /* Registry row: no expand — name + phrasing count + delete, phrasings shown read-only below.
+         Right padding intentionally comes from .vof-settings-head (4px, hugging the delete button),
+         matching the value rows; this rule owns the other three sides. */
+      .vof-registry-head { padding: 7px 8px 7px; }
+      .vof-registry-phrasings { padding: 0 8px 8px; }
+      .vof-settings-search { width: 100%; box-sizing: border-box; font: inherit; padding: 6px 8px; margin-bottom: 8px; }
+      .vof-settings-card { border: 1px solid #d0d7de; border-radius: 6px; margin-bottom: 6px; }
+      .vof-settings-card.expanded { padding-bottom: 8px; }
+      /* Collapsed row: an expand button (chevron · label · default value) + delete. */
+      .vof-settings-head { display: flex; align-items: center; gap: 2px; padding-right: 4px; }
+      .vof-expand {
+        flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 8px;
+        padding: 7px 8px; background: none; border: none; cursor: pointer;
+        font: inherit; color: inherit; text-align: left;
+      }
+      .vof-chevron { flex: none; width: 12px; color: #8b949e; font-size: 10px; }
+      .vof-settings-label { flex: none; max-width: 45%; font: 600 13px system-ui, sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .vof-settings-preview { flex: 1 1 auto; min-width: 0; font-size: 14px; color: #4b5259; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .vof-settings-body[hidden] { display: none; }
+      .vof-settings-body { padding: 0 8px; }
+      .vof-settings-variant { display: flex; align-items: center; gap: 6px; margin: 3px 0; }
+      .vof-settings-vname { flex: none; font-size: 11px; color: #8b949e; min-width: 56px; }
+      .vof-settings-value { flex: 1 1 auto; min-width: 0; padding: 5px 7px; font: inherit; font-size: 15px; }
+      .vof-icon-btn { flex: none; cursor: pointer; background: none; border: none; font-size: 12px; padding: 0 3px; color: #6e7781; line-height: 1; }
+      .vof-settings-aliases { margin-top: 6px; }
+      .vof-settings-subhead { font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: #8b949e; margin-bottom: 4px; }
+      .vof-alias-chip { display: inline-flex; align-items: center; gap: 2px; font-size: 11px; background: rgba(139,148,158,0.15); border-radius: 10px; padding: 1px 4px 1px 8px; margin: 0 4px 4px 0; }
+      .vof-settings-addalias { display: flex; gap: 4px; margin-top: 2px; }
+      .vof-settings-addalias input { flex: 1 1 auto; min-width: 0; font-size: 11px; padding: 2px 4px; }
+      .vof-settings-addalias button { flex: none; font-size: 11px; padding: 2px 8px; cursor: pointer; }
+      /* Vault unlock prompt + locked screen + encryption settings. */
+      #vault-unlock[hidden] { display: none; }
+      .vof-unlock, .vof-locked { border: 1px solid #d0d7de; border-radius: 6px; padding: 10px; margin-bottom: 8px; }
+      .vof-unlock-title { font: 700 13px system-ui, sans-serif; margin-bottom: 6px; }
+      .vof-unlock-label, .vof-enc-field { display: block; font-size: 12px; margin-bottom: 6px; }
+      .vof-unlock-input, .vof-enc-field input { width: 100%; box-sizing: border-box; font: inherit; padding: 6px 8px; margin-top: 3px; }
+      .vof-unlock-actions, .vof-unlock-error, .vof-enc-error { margin-top: 6px; }
+      .vof-unlock-actions { display: flex; gap: 6px; }
+      .vof-unlock-error, .vof-enc-error { color: #cf222e; font-size: 12px; min-height: 1em; }
+      .vof-enc-status { font: 600 12px system-ui, sans-serif; margin: 0 0 4px; }
+      .vof-enc-note { font-size: 11px; color: #8b949e; margin: 0 0 8px; }
+      .vof-enc-mode { border: 1px solid #d0d7de; border-radius: 6px; padding: 6px 8px; margin: 6px 0; font-size: 12px; }
+      .vof-enc-mode legend { font-size: 11px; color: #8b949e; padding: 0 4px; }
+      .vof-enc-mode label { display: block; margin: 2px 0; }
+      .vof-enc-action:not(:empty) { margin: 6px 0; }
+      .vof-enc-hint { font-size: 12px; color: #57606a; margin: 0 0 6px; }
+      .vof-enc-form button, .vof-locked button { margin-top: 4px; font: inherit; padding: 6px 10px; border-radius: 6px; cursor: pointer; }
+      @media (prefers-color-scheme: dark) {
+        body { color: #e6edf3; background: #0d1117; }
+        .vof-placeholder, .vof-work-status { color: #9198a1; }
+        #status-footer { background: #0d1117; }
+        #status-footer.has-status { border-top-color: #30363d; }
+        .vof-menu { background: #161b22; border-color: #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        .vof-menu-section + .vof-menu-section { border-top-color: #30363d; }
+        ::selection { background: #3d444d; color: #e6edf3; }
+        #settings-button, .vof-settings-card { border-color: #30363d; }
+        .vof-unlock, .vof-locked, .vof-enc-mode { border-color: #30363d; }
+        .vof-unlock-error, .vof-enc-error { color: #ff7b72; }
+        .vof-settings-preview { color: #adbac7; }
+        .vof-gpu-status.warn { color: #d29922; }
+        .vof-tablist { border-bottom-color: #30363d; }
+        .vof-tab { color: #9198a1; }
+        .vof-tab[aria-selected="true"] { color: #e6edf3; border-bottom-color: #6e7781; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="panel.js"></script>
+  </body>
+</html>

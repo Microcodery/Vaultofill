@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DevSummit 2026 — Registration</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, "Segoe UI", sans-serif; background: #0d1b2a; color: #e0e6ee; line-height: 1.5; }
+    .page { max-width: 720px; margin: 0 auto; padding: 40px 20px 70px; }
+    h1 { font-size: 27px; margin: 0 0 2px; }
+    .kicker { color: #8aa0b8; margin: 0 0 26px; }
+    .panel { background: #16273a; border: 1px solid #24374f; border-radius: 14px; padding: 26px; }
+    .field { margin-bottom: 18px; }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .row .field { flex: 1 1 220px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    input { width: 100%; padding: 11px 12px; border: 1px solid #2f455f; border-radius: 9px; font-size: 15px; background: #0d1b2a; color: #e0e6ee; }
+    fieldset { border: 1px solid #2f455f; border-radius: 9px; padding: 10px 14px; margin: 0 0 18px; }
+    legend { font-weight: 600; font-size: 14px; padding: 0 6px; }
+    .opt { display: inline-flex; align-items: center; gap: 8px; margin-right: 18px; font-weight: 400; }
+    .opt input { width: auto; }
+    button { padding: 12px 28px; font-size: 15px; font-weight: 700; color: #0d1b2a; background: #4cc9f0; border: none; border-radius: 9px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>DevSummit 2026</h1>
+    <p class="kicker">Three days of talks, workshops, and hallway track.</p>
+    <div class="panel">
+      <form id="conf-form" novalidate>
+        <div class="field">
+          <label for="full-name">Full name</label>
+          <input type="text" id="full-name" name="full_name" autocomplete="name">
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="company">Company name</label>
+            <input type="text" id="company" name="company" autocomplete="organization">
+          </div>
+        </div>
+        <div class="field">
+          <label for="title">Job title</label>
+          <input type="text" id="title" name="title" autocomplete="organization-title">
+        </div>
+        <fieldset>
+          <legend>Ticket type</legend>
+          <label class="opt"><input type="radio" name="ticket" value="standard"> Standard</label>
+          <label class="opt"><input type="radio" name="ticket" value="workshop"> Workshop pass</label>
+          <label class="opt"><input type="radio" name="ticket" value="student"> Student</label>
+        </fieldset>
+        <div class="field">
+          <label for="diet">Special dietary needs</label>
+          <input type="text" id="diet" name="diet" placeholder="Vegan, gluten-free, none…">
+        </div>
+        <div class="field">
+          <label for="emergency">Emergency contact</label>
+          <input type="text" id="emergency" name="emergency" placeholder="Name and phone">
+        </div>
+        <button type="submit">Register</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

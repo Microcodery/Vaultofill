@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Northstar — Summer Internship Application</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", Roboto, Arial, sans-serif; background: #f5f7fb; color: #1d2635; line-height: 1.5; }
+    .page { max-width: 700px; margin: 0 auto; padding: 34px 20px 64px; }
+    h1 { font-size: 24px; margin: 0 0 4px; color: #274b9b; }
+    .sub { color: #5b6577; margin: 0 0 24px; }
+    form { background: #fff; border: 1px solid #d6dded; border-radius: 12px; padding: 26px; }
+    .field { margin-bottom: 18px; }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .row .field { flex: 1 1 200px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    input, textarea { width: 100%; padding: 10px 12px; border: 1px solid #ccd5e6; border-radius: 8px; font-size: 15px; font-family: inherit; }
+    textarea { min-height: 140px; resize: vertical; }
+    button { padding: 12px 28px; font-size: 15px; font-weight: 600; color: #fff; background: #274b9b; border: none; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Northstar Summer Internship</h1>
+    <p class="sub">Tell us about yourself — we review every application.</p>
+    <form id="internship-form" novalidate>
+      <div class="field">
+        <label for="full-name">Full name</label>
+        <input type="text" id="full-name" name="full_name" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" autocomplete="email">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="linkedin">LinkedIn URL</label>
+          <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/…">
+        </div>
+        <div class="field">
+          <label for="portfolio">Portfolio URL</label>
+          <input type="url" id="portfolio" name="portfolio" placeholder="https://…">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="gpa">GPA</label>
+          <input type="text" id="gpa" name="gpa" placeholder="e.g. 3.7">
+        </div>
+        <div class="field">
+          <label for="field-of-study">Field of study</label>
+          <input type="text" id="field-of-study" name="field_of_study">
+        </div>
+      </div>
+      <div class="field">
+        <label for="cover-letter">Cover letter</label>
+        <textarea id="cover-letter" name="cover_letter" placeholder="Why do you want to intern with us?"></textarea>
+      </div>
+      <button type="submit">Submit application</button>
+    </form>
+  </div>
+</body>
+</html>

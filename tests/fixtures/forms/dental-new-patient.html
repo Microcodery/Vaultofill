@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bright Smile Dental — New Patient Form</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", Roboto, Arial, sans-serif; background: #eef7f9; color: #1b2e33; line-height: 1.5; }
+    .page { max-width: 680px; margin: 0 auto; padding: 34px 20px 60px; }
+    h1 { font-size: 22px; margin: 0 0 4px; color: #0a7d8c; }
+    .sub { color: #5b6c70; margin: 0 0 22px; }
+    form { background: #fff; border: 1px solid #cfe3e7; border-radius: 10px; padding: 24px; }
+    .field { margin-bottom: 18px; }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .row .field { flex: 1 1 200px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    input, textarea { width: 100%; padding: 10px 12px; border: 1px solid #c4d9dd; border-radius: 8px; font-size: 15px; font-family: inherit; }
+    textarea { min-height: 90px; resize: vertical; }
+    button { padding: 12px 26px; font-size: 15px; color: #fff; background: #0a7d8c; border: none; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Bright Smile Dental</h1>
+    <p class="sub">New patient registration.</p>
+    <form id="dental-form" novalidate>
+      <div class="field">
+        <label for="full-name">Full name</label>
+        <input type="text" id="full-name" name="full_name" autocomplete="name">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="dob">Date of birth</label>
+          <input type="date" id="dob" name="dob" autocomplete="bday">
+        </div>
+        <div class="field">
+          <label for="phone">Phone number</label>
+          <input type="tel" id="phone" name="phone" autocomplete="tel">
+        </div>
+      </div>
+      <div class="field">
+        <label for="ec-name">Emergency contact name</label>
+        <input type="text" id="ec-name" name="ec_name">
+      </div>
+      <div class="field">
+        <label for="insurance">Insurance provider</label>
+        <input type="text" id="insurance" name="insurance">
+      </div>
+      <div class="field">
+        <label for="reason">Reason for visit</label>
+        <textarea id="reason" name="reason" placeholder="Cleaning, toothache, consultation…"></textarea>
+      </div>
+      <button type="submit">Submit form</button>
+    </form>
+  </div>
+</body>
+</html>

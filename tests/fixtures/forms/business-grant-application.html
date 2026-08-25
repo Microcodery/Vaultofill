@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Statewide Economic Development Office — Small Business Growth Grant</title>
+  <style>
+    :root {
+      --brand: #1b3a5c;
+      --brand-dark: #12293f;
+      --brand-light: #e7eef4;
+      --accent: #b0873a;
+      --bg: #eef1f4;
+      --text: #1c2733;
+      --muted: #5a6673;
+      --border: #b9c4cf;
+      --error: #a12a1f;
+      --error-bg: #fbe9e7;
+      --ok: #1c6b3c;
+      --ok-bg: #e6f4ec;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: "Helvetica Neue", Arial, sans-serif; line-height: 1.5;
+    }
+    .page { max-width: 820px; margin: 0 auto; padding: 0 20px 60px; }
+    .gov-bar { background: var(--brand-dark); color: #cfe0ef; font-size: 12px; padding: 6px 0; }
+    .gov-bar .page { padding-bottom: 0; }
+    header.brand {
+      background: var(--brand); color: #fff; padding: 24px 0;
+      border-bottom: 4px solid var(--accent); margin-bottom: 28px;
+    }
+    header.brand .page { padding-bottom: 0; display: flex; align-items: center; gap: 16px; }
+    .seal {
+      width: 52px; height: 52px; border-radius: 50%;
+      border: 3px solid var(--accent); display: flex; align-items: center;
+      justify-content: center; font-size: 26px; flex: none;
+    }
+    header h1 { margin: 0; font-size: 21px; }
+    header p { margin: 3px 0 0; font-size: 13px; opacity: 0.9; }
+    .card {
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      padding: 30px; box-shadow: 0 1px 6px rgba(27, 58, 92, 0.08);
+    }
+    .card h2 { margin-top: 0; color: var(--brand-dark); }
+    .intro { color: var(--muted); margin-bottom: 26px; font-size: 15px; }
+    .section-title {
+      font-size: 13px; text-transform: uppercase; letter-spacing: 1px;
+      color: var(--accent); font-weight: 700; margin: 26px 0 12px;
+      border-bottom: 1px solid var(--border); padding-bottom: 6px;
+    }
+    .field { margin-bottom: 16px; }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .row .field { flex: 1 1 200px; }
+    input[type=text], input[type=number], select, textarea {
+      width: 100%; padding: 11px 13px; border: 1px solid var(--border);
+      border-radius: 6px; font-size: 15px; font-family: inherit;
+      background: #fff; color: var(--text);
+    }
+    input::placeholder, textarea::placeholder { color: #8a97a3; }
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: var(--brand);
+      box-shadow: 0 0 0 3px var(--brand-light);
+    }
+    textarea { resize: vertical; min-height: 110px; }
+    .consent { display: flex; gap: 10px; align-items: flex-start; margin-top: 8px; }
+    .consent input { margin-top: 4px; flex: none; }
+    .consent span.consent-text { font-size: 14px; }
+    .field-error input, .field-error select, .field-error textarea,
+    input.field-error, select.field-error, textarea.field-error {
+      border-color: var(--error); background: var(--error-bg);
+    }
+    .error-msg { display: block; color: var(--error); font-size: 12px; margin-top: 5px; }
+    .actions { margin-top: 20px; }
+    input[type=submit] {
+      background: var(--brand); color: #fff; border: none; padding: 13px 28px;
+      font-size: 16px; font-weight: 700; border-radius: 6px; cursor: pointer;
+      font-family: inherit;
+    }
+    input[type=submit]:hover { background: var(--brand-dark); }
+    .result {
+      margin-top: 24px; padding: 16px 20px; border-radius: 8px;
+      border: 1px solid transparent;
+    }
+    .result h3 { margin: 0 0 8px; font-size: 17px; }
+    .result ul { margin: 0; padding-left: 20px; }
+    .result.pass { background: var(--ok-bg); border-color: var(--ok); color: var(--ok); }
+    .result.fail { background: var(--error-bg); border-color: var(--error); color: var(--error); }
+  </style>
+</head>
+<body>
+  <div class="gov-bar">
+    <div class="page">An official program of the Statewide Economic Development Office</div>
+  </div>
+  <header class="brand">
+    <div class="page">
+      <div class="seal" aria-hidden="true">&#127963;</div>
+      <div>
+        <h1>Small Business Growth Grant</h1>
+        <p>Application Form EDO-114 &middot; Fiscal Year 2026</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="card">
+      <h2>Grant Application</h2>
+      <p class="intro">Complete all fields to apply for growth funding. All information is verified against public and state records prior to award.</p>
+
+      <form id="grant-form" novalidate>
+
+        <div class="section-title">Business Identity</div>
+
+        <div class="field">
+          <input type="text" id="legal-business-name" name="legal_business_name"
+                 placeholder="Legal business name (as registered)">
+          <span class="error-msg" id="legal-business-name-error"></span>
+        </div>
+
+        <div class="field">
+          <input type="text" id="ein" name="ein" inputmode="numeric"
+                 placeholder="Employer Identification Number (EIN) — ##-#######">
+          <span class="error-msg" id="ein-error"></span>
+        </div>
+
+        <div class="field">
+          <input type="text" id="business-address" name="business_address"
+                 placeholder="Business street address, city, state, ZIP">
+          <span class="error-msg" id="business-address-error"></span>
+        </div>
+
+        <div class="field">
+          <select id="industry" name="industry">
+            <option value="">Industry sector&hellip;</option>
+            <option value="retail">Retail &amp; Consumer Goods</option>
+            <option value="food_service">Food Service &amp; Hospitality</option>
+            <option value="manufacturing">Manufacturing</option>
+            <option value="professional_services">Professional Services</option>
+            <option value="construction">Construction &amp; Trades</option>
+            <option value="technology">Technology</option>
+            <option value="healthcare">Healthcare</option>
+            <option value="other">Other</option>
+          </select>
+          <span class="error-msg" id="industry-error"></span>
+        </div>
+
+        <div class="section-title">Operations &amp; Request</div>
+
+        <div class="row">
+          <div class="field">
+            <input type="number" id="years-in-operation" name="years_in_operation" min="0" step="1"
+                   placeholder="Years in operation">
+            <span class="error-msg" id="years-in-operation-error"></span>
+          </div>
+          <div class="field">
+            <input type="number" id="number-of-employees" name="number_of_employees" min="0" step="1"
+                   placeholder="Number of employees">
+            <span class="error-msg" id="number-of-employees-error"></span>
+          </div>
+          <div class="field">
+            <input type="number" id="requested-amount" name="requested_amount" min="0" step="0.01"
+                   placeholder="Requested amount (USD)">
+            <span class="error-msg" id="requested-amount-error"></span>
+          </div>
+        </div>
+
+        <div class="field">
+          <textarea id="use-of-funds" name="use_of_funds"
+                    placeholder="Describe how the grant funds will be used"></textarea>
+          <span class="error-msg" id="use-of-funds-error"></span>
+        </div>
+
+        <div class="field">
+          <div class="consent">
+            <input type="checkbox" id="authorized-officer" name="authorized_officer" value="confirmed"
+>
+            <span class="consent-text">I certify that I am an authorized officer of this business and that the information provided is true and correct.</span>
+          </div>
+          <span class="error-msg" id="authorized-officer-error"></span>
+        </div>
+
+        <div class="actions">
+          <input type="submit" value="Submit Application">
+        </div>
+
+        <div id="result" class="result" role="status" aria-live="polite" hidden></div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var form = document.getElementById('grant-form');
+      var result = document.getElementById('result');
+      var einRe = /^\d{2}-\d{7}$/;
+
+      function fieldOf(id) { return document.getElementById(id); }
+      function wrapper(el) { return el.closest('.field') || el; }
+
+      function clearErrors() {
+        form.querySelectorAll('.field-error').forEach(function (el) { el.classList.remove('field-error'); });
+        form.querySelectorAll('.error-msg').forEach(function (el) { el.textContent = ''; });
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearErrors();
+        var failures = [];
+
+        function fail(fieldId, message, control) {
+          failures.push({ fieldId: fieldId, message: message });
+          var el = control || fieldOf(fieldId);
+          if (el) wrapper(el).classList.add('field-error');
+          var msg = document.getElementById(fieldId + '-error');
+          if (msg) msg.textContent = message;
+        }
+
+        var bizName = fieldOf('legal-business-name');
+        if (!bizName.value.trim()) fail('legal-business-name', 'Legal business name is required.');
+
+        var ein = fieldOf('ein');
+        if (!ein.value.trim()) fail('ein', 'EIN is required.');
+        else if (!einRe.test(ein.value.trim())) fail('ein', 'EIN must be in the format ##-####### (e.g. 12-3456789).');
+
+        var addr = fieldOf('business-address');
+        if (!addr.value.trim()) fail('business-address', 'Business address is required.');
+
+        var industry = fieldOf('industry');
+        if (!industry.value) fail('industry', 'Please select an industry sector.');
+
+        var years = fieldOf('years-in-operation');
+        var yearsVal = parseInt(years.value, 10);
+        if (!years.value.trim()) fail('years-in-operation', 'Years in operation is required.');
+        else if (isNaN(yearsVal) || yearsVal < 0) fail('years-in-operation', 'Years in operation cannot be negative.');
+
+        var employees = fieldOf('number-of-employees');
+        var empVal = parseInt(employees.value, 10);
+        if (!employees.value.trim()) fail('number-of-employees', 'Number of employees is required.');
+        else if (isNaN(empVal) || empVal < 0) fail('number-of-employees', 'Number of employees cannot be negative.');
+
+        var amount = fieldOf('requested-amount');
+        var amtVal = parseFloat(amount.value);
+        if (!amount.value.trim()) fail('requested-amount', 'Requested amount is required.');
+        else if (isNaN(amtVal) || amtVal <= 0) fail('requested-amount', 'Requested amount must be greater than 0.');
+
+        var use = fieldOf('use-of-funds');
+        if (!use.value.trim()) fail('use-of-funds', 'Please describe the use of funds.');
+
+        var officer = fieldOf('authorized-officer');
+        if (!officer.checked) fail('authorized-officer', 'You must certify that you are an authorized officer.');
+
+        if (failures.length) {
+          var items = failures.map(function (f) { return '<li>' + f.message + '</li>'; }).join('');
+          result.className = 'result fail';
+          result.innerHTML = '<h3>&#10007; Submission failed &mdash; ' + failures.length +
+            ' issue(s)</h3><ul>' + items + '</ul>';
+        } else {
+          result.className = 'result pass';
+          result.innerHTML = '<h3>&#10003; Submission passed &mdash; all fields valid.</h3>';
+        }
+        result.hidden = false;
+        result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    })();
+  </script>
+</body>
+</html>

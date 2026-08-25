@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cedar &amp; Vine Residences — Rental Application</title>
+  <style>
+    :root {
+      --ink: #22312b;
+      --accent: #3d6b52;
+      --accent-dark: #2f5340;
+      --bg: #f2f4f1;
+      --card: #ffffff;
+      --muted: #61705f;
+      --border: #d4dbd2;
+      --danger: #b23b3b;
+      --danger-bg: #fbeceb;
+      --ok: #1f7a4d;
+      --ok-bg: #e7f6ee;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.5;
+    }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 32px 20px 64px; }
+    header.brand {
+      display: flex; align-items: center; gap: 14px;
+      border-bottom: 3px solid var(--accent); padding-bottom: 16px;
+    }
+    .logo {
+      width: 46px; height: 46px; border-radius: 12px; background: var(--accent); color: #fff;
+      display: grid; place-items: center; font-size: 24px;
+    }
+    .brand h1 { margin: 0; font-size: 23px; letter-spacing: -0.3px; }
+    .brand p { margin: 0; color: var(--muted); font-size: 13px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 26px; margin-top: 22px; box-shadow: 0 6px 18px rgba(34,49,43,0.06);
+    }
+    .lede { margin: 0 0 8px; color: var(--muted); }
+    section.block { margin-top: 26px; }
+    section.block > h2 {
+      font-size: 16px; margin: 0 0 4px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+      color: var(--accent-dark);
+    }
+    .section-note { color: var(--muted); font-size: 12px; margin: 0 0 14px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid.thirds { grid-template-columns: 1fr 1fr 1fr; }
+    .field.full { grid-column: 1 / -1; }
+    .field { margin-bottom: 2px; }
+    label.field-label, .group-label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    .req { color: var(--danger); }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"] {
+      width: 100%; padding: 10px 12px; font-size: 15px;
+      border: 1px solid var(--border); border-radius: 9px; background: #fff; color: var(--ink);
+    }
+    input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+    fieldset { border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; margin: 0; }
+    fieldset legend { font-weight: 600; font-size: 14px; padding: 0 6px; }
+    .radios { display: flex; gap: 20px; }
+    .opt { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .opt input { width: 16px; height: 16px; accent-color: var(--accent-dark); }
+    .ref-card { border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; background: #fafbfa; }
+    .ref-card h3 { margin: 0 0 10px; font-size: 14px; color: var(--accent-dark); }
+    .agree { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; margin-top: 6px; }
+    .agree input { margin-top: 3px; width: 16px; height: 16px; accent-color: var(--accent-dark); }
+    button[type="submit"] {
+      margin-top: 22px; padding: 13px 26px; font-size: 16px; font-weight: 700;
+      color: #fff; background: var(--accent); border: none; border-radius: 10px; cursor: pointer;
+    }
+    button[type="submit"]:hover { background: var(--accent-dark); }
+    input.field-error, fieldset.field-error { border-color: var(--danger) !important; }
+    fieldset.field-error { box-shadow: 0 0 0 1px var(--danger); }
+    .error-msg { color: var(--danger); font-size: 12px; margin-top: 5px; }
+    .result { margin-top: 22px; padding: 14px 16px; border-radius: 10px; font-size: 14px; }
+    .result h2 { margin: 0 0 6px; font-size: 15px; border: none; padding: 0; }
+    .result ul { margin: 6px 0 0; padding-left: 20px; }
+    .result.pass { background: var(--ok-bg); color: var(--ok); border: 1px solid #b6ddc4; }
+    .result.fail { background: var(--danger-bg); color: var(--danger); border: 1px solid #f2b8b1; }
+    footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 24px; }
+    @media (max-width: 680px) { .grid, .grid.thirds { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="brand">
+      <div class="logo">🏡</div>
+      <div>
+        <h1>Cedar &amp; Vine Residences</h1>
+        <p>Rental Application · Property Management Group</p>
+      </div>
+    </header>
+
+    <div class="card">
+      <p class="lede">Please complete all required fields. Fields marked <span class="req">*</span> are required.</p>
+
+      <form id="rental-form" novalidate>
+
+        <section class="block">
+          <h2>Applicant</h2>
+          <div class="grid">
+            <div class="field full">
+              <label class="field-label" for="full-name">Full name <span class="req">*</span></label>
+              <input type="text" id="full-name" name="full_name" autocomplete="name" placeholder="Jordan Rivera">
+              <div class="error-msg" id="full-name-error"></div>
+            </div>
+            <div class="field">
+              <label class="field-label" for="email">Email <span class="req">*</span></label>
+              <input type="email" id="email" name="email" autocomplete="email" placeholder="jordan@example.com">
+              <div class="error-msg" id="email-error"></div>
+            </div>
+            <div class="field">
+              <label class="field-label" for="phone">Phone <span class="req">*</span></label>
+              <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="(555) 123-4567">
+              <div class="error-msg" id="phone-error"></div>
+            </div>
+            <div class="field full">
+              <label class="field-label" for="current-address">Current address <span class="req">*</span></label>
+              <input type="text" id="current-address" name="current_address" autocomplete="street-address" placeholder="123 Main St, Apt 4B, Springfield">
+              <div class="error-msg" id="current-address-error"></div>
+            </div>
+            <div class="field">
+              <label class="field-label" for="monthly-income">Monthly income (USD) <span class="req">*</span></label>
+              <input type="number" id="monthly-income" name="monthly_income" min="1" step="1" placeholder="4200">
+              <div class="error-msg" id="monthly-income-error"></div>
+            </div>
+            <div class="field">
+              <label class="field-label" for="move-in-date">Desired move-in date <span class="req">*</span></label>
+              <input type="date" id="move-in-date" name="move_in_date">
+              <div class="error-msg" id="move-in-date-error"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="block">
+          <h2>Pets</h2>
+          <div class="field">
+            <fieldset id="pets">
+              <legend>Do you have pets? <span class="req">*</span></legend>
+              <div class="radios">
+                <label class="opt"><input type="radio" name="pets" value="yes"> Yes</label>
+                <label class="opt"><input type="radio" name="pets" value="no"> No</label>
+              </div>
+            </fieldset>
+            <div class="error-msg" id="pets-error"></div>
+          </div>
+          <div class="field" style="margin-top:14px;">
+            <label class="field-label" for="pet-description">Pet description (required if you have pets)</label>
+            <input type="text" id="pet-description" name="pet_description" placeholder="e.g. one 30lb Labrador, spayed">
+            <div class="error-msg" id="pet-description-error"></div>
+          </div>
+        </section>
+
+        <section class="block">
+          <h2>Co-applicant</h2>
+          <p class="section-note">Optional — only if someone will share the lease with you.</p>
+          <div class="field full">
+            <label class="field-label" for="co-applicant-name">Co-applicant name</label>
+            <input type="text" id="co-applicant-name" name="co_applicant_name" autocomplete="name" placeholder="Optional">
+            <div class="error-msg" id="co-applicant-name-error"></div>
+          </div>
+        </section>
+
+        <section class="block">
+          <h2>References</h2>
+          <p class="section-note">Please provide two references. Name and phone are required for each.</p>
+
+          <div class="ref-card">
+            <h3>Reference 1</h3>
+            <div class="grid thirds">
+              <div class="field">
+                <label class="field-label" for="ref1-name">Name <span class="req">*</span></label>
+                <input type="text" id="ref1-name" name="ref1_name" autocomplete="name">
+                <div class="error-msg" id="ref1-name-error"></div>
+              </div>
+              <div class="field">
+                <label class="field-label" for="ref1-phone">Phone <span class="req">*</span></label>
+                <input type="tel" id="ref1-phone" name="ref1_phone" autocomplete="tel">
+                <div class="error-msg" id="ref1-phone-error"></div>
+              </div>
+              <div class="field">
+                <label class="field-label" for="ref1-relationship">Relationship</label>
+                <input type="text" id="ref1-relationship" name="ref1_relationship" placeholder="e.g. Former landlord">
+                <div class="error-msg" id="ref1-relationship-error"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ref-card">
+            <h3>Reference 2</h3>
+            <div class="grid thirds">
+              <div class="field">
+                <label class="field-label" for="ref2-name">Name <span class="req">*</span></label>
+                <input type="text" id="ref2-name" name="ref2_name" autocomplete="name">
+                <div class="error-msg" id="ref2-name-error"></div>
+              </div>
+              <div class="field">
+                <label class="field-label" for="ref2-phone">Phone <span class="req">*</span></label>
+                <input type="tel" id="ref2-phone" name="ref2_phone" autocomplete="tel">
+                <div class="error-msg" id="ref2-phone-error"></div>
+              </div>
+              <div class="field">
+                <label class="field-label" for="ref2-relationship">Relationship</label>
+                <input type="text" id="ref2-relationship" name="ref2_relationship" placeholder="e.g. Employer">
+                <div class="error-msg" id="ref2-relationship-error"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="block">
+          <h2>Authorization</h2>
+          <label class="agree">
+            <input type="checkbox" id="background-check" name="background_check" value="yes">
+            <span>I authorize Cedar &amp; Vine Residences to run a background and credit check. <span class="req">*</span></span>
+          </label>
+          <div class="error-msg" id="background-check-error"></div>
+        </section>
+
+        <button type="submit">Submit application</button>
+
+        <div id="result" class="result" role="status" aria-live="polite" hidden></div>
+      </form>
+    </div>
+
+    <footer>Cedar &amp; Vine Residences · Equal Housing Opportunity</footer>
+  </div>
+
+  <script>
+    (function () {
+      var form = document.getElementById('rental-form');
+      var result = document.getElementById('result');
+      var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      function clearErrors() {
+        form.querySelectorAll('.field-error').forEach(function (el) { el.classList.remove('field-error'); });
+        form.querySelectorAll('.error-msg').forEach(function (el) { el.textContent = ''; });
+      }
+
+      function fail(failures, id, msg) {
+        failures.push({ fieldId: id, message: msg });
+        var control = document.getElementById(id);
+        if (control) control.classList.add('field-error');
+        var box = document.getElementById(id + '-error');
+        if (box) box.textContent = msg;
+      }
+
+      function digits(v) { return (v || '').replace(/\D/g, ''); }
+      function todayStr() {
+        var d = new Date();
+        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearErrors();
+        var failures = [];
+
+        var name = document.getElementById('full-name').value.trim();
+        if (!name) fail(failures, 'full-name', 'Full name is required.');
+
+        var email = document.getElementById('email').value.trim();
+        if (!email) fail(failures, 'email', 'Email is required.');
+        else if (!emailRe.test(email)) fail(failures, 'email', 'Enter a valid email address.');
+
+        var phone = document.getElementById('phone').value.trim();
+        if (!phone) fail(failures, 'phone', 'Phone is required.');
+        else if (digits(phone).length < 10) fail(failures, 'phone', 'Enter a phone number with at least 10 digits.');
+
+        var addr = document.getElementById('current-address').value.trim();
+        if (!addr) fail(failures, 'current-address', 'Current address is required.');
+
+        var incomeRaw = document.getElementById('monthly-income').value.trim();
+        var income = parseFloat(incomeRaw);
+        if (!incomeRaw) fail(failures, 'monthly-income', 'Monthly income is required.');
+        else if (isNaN(income) || income <= 0) fail(failures, 'monthly-income', 'Monthly income must be greater than 0.');
+
+        var moveIn = document.getElementById('move-in-date').value;
+        if (!moveIn) fail(failures, 'move-in-date', 'Move-in date is required.');
+        else if (moveIn < todayStr()) fail(failures, 'move-in-date', 'Move-in date must be today or later.');
+
+        var pets = form.querySelector('input[name="pets"]:checked');
+        if (!pets) fail(failures, 'pets', 'Please indicate whether you have pets.');
+        else if (pets.value === 'yes') {
+          var petDesc = document.getElementById('pet-description').value.trim();
+          if (!petDesc) fail(failures, 'pet-description', 'Pet description is required when you have pets.');
+        }
+
+        // Co-applicant name is optional — no validation.
+
+        [['ref1', 'Reference 1'], ['ref2', 'Reference 2']].forEach(function (r) {
+          var key = r[0], label = r[1];
+          var rn = document.getElementById(key + '-name').value.trim();
+          var rp = document.getElementById(key + '-phone').value.trim();
+          if (!rn) fail(failures, key + '-name', label + ' name is required.');
+          if (!rp) fail(failures, key + '-phone', label + ' phone is required.');
+          else if (digits(rp).length < 10) fail(failures, key + '-phone', label + ' phone must have at least 10 digits.');
+        });
+
+        var bg = document.getElementById('background-check');
+        if (!bg.checked) fail(failures, 'background-check', 'You must authorize the background check.');
+
+        renderResult(failures);
+      });
+
+      function renderResult(failures) {
+        result.hidden = false;
+        if (failures.length === 0) {
+          result.className = 'result pass';
+          result.innerHTML = '✓ Submission passed — all fields valid.';
+        } else {
+          result.className = 'result fail';
+          var items = failures.map(function (f) { return '<li>' + f.message + '</li>'; }).join('');
+          result.innerHTML = '<h2>✗ Submission failed — ' + failures.length + ' issue(s)</h2><ul>' + items + '</ul>';
+        }
+        result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Daily Ping — Newsletter Signup</title>
+  <style>
+    :root {
+      --ink: #14213d;
+      --accent: #fca311;
+      --accent-dark: #e08e00;
+      --bg: #f7f7fb;
+      --card: #ffffff;
+      --muted: #5b6272;
+      --border: #d7dae2;
+      --danger: #c0392b;
+      --danger-bg: #fdecea;
+      --ok: #1e7e46;
+      --ok-bg: #e7f6ed;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .wrap { max-width: 640px; margin: 0 auto; padding: 32px 20px 64px; }
+    header.brand { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .logo {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--ink); color: var(--accent);
+      display: grid; place-items: center; font-size: 22px; font-weight: 800;
+    }
+    .brand h1 { font-size: 22px; margin: 0; letter-spacing: -0.3px; }
+    .brand p { margin: 0; color: var(--muted); font-size: 13px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 28px; margin-top: 20px; box-shadow: 0 6px 20px rgba(20,33,61,0.06);
+    }
+    .lede { margin: 0 0 22px; color: var(--muted); }
+    .field { margin-bottom: 20px; }
+    label.field-label, .group-label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    .hint { color: var(--muted); font-size: 12px; margin: 2px 0 8px; }
+    input[type="email"], input[type="text"] {
+      width: 100%; padding: 11px 12px; font-size: 15px;
+      border: 1px solid var(--border); border-radius: 9px; background: #fff; color: var(--ink);
+    }
+    input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+    fieldset { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin: 0; }
+    fieldset legend { font-weight: 600; font-size: 14px; padding: 0 6px; }
+    .opt { display: flex; align-items: center; gap: 9px; padding: 5px 0; font-size: 14px; }
+    .opt input { width: 16px; height: 16px; accent-color: var(--accent-dark); }
+    .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 16px; }
+    .consent { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; }
+    .consent input { margin-top: 3px; width: 16px; height: 16px; accent-color: var(--accent-dark); }
+    button[type="submit"] {
+      width: 100%; margin-top: 4px; padding: 13px 16px; font-size: 16px; font-weight: 700;
+      color: var(--ink); background: var(--accent); border: none; border-radius: 10px; cursor: pointer;
+    }
+    button[type="submit"]:hover { background: var(--accent-dark); }
+    /* Honeypot: visually hidden, off-screen, not announced. Real users never see or fill it. */
+    .hp-field {
+      position: absolute; left: -9999px; top: auto; width: 1px; height: 1px;
+      overflow: hidden; opacity: 0;
+    }
+    .field-error input, input.field-error, fieldset.field-error { border-color: var(--danger) !important; }
+    fieldset.field-error { box-shadow: 0 0 0 1px var(--danger); }
+    .error-msg { color: var(--danger); font-size: 12px; margin-top: 5px; min-height: 0; }
+    .result { margin-top: 20px; padding: 14px 16px; border-radius: 10px; font-size: 14px; }
+    .result h2 { margin: 0 0 6px; font-size: 15px; }
+    .result ul { margin: 6px 0 0; padding-left: 20px; }
+    .result.pass { background: var(--ok-bg); color: var(--ok); border: 1px solid #b6ddc4; }
+    .result.fail { background: var(--danger-bg); color: var(--danger); border: 1px solid #f2b8b1; }
+    footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="brand">
+      <div class="logo">✦</div>
+      <div>
+        <h1>The Daily Ping</h1>
+        <p>Smart tech &amp; culture, straight to your inbox.</p>
+      </div>
+    </header>
+
+    <div class="card">
+      <p class="lede">Join 240,000 curious readers. Pick your cadence and the topics you love — unsubscribe anytime.</p>
+
+      <form id="newsletter-form" novalidate>
+        <div class="field">
+          <label class="field-label" for="email">Email address</label>
+          <input type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com">
+          <div class="error-msg" id="email-error"></div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="first-name">First name</label>
+          <input type="text" id="first-name" name="first_name" autocomplete="given-name" placeholder="Alex">
+          <div class="error-msg" id="first-name-error"></div>
+        </div>
+
+        <!-- Honeypot: named "website" and kept off-screen. If a bot fills it, we flag spam. -->
+        <div class="hp-field" aria-hidden="true">
+          <label for="website">Website</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="field">
+          <fieldset id="frequency" name="frequency">
+            <legend>How often?</legend>
+            <label class="opt"><input type="radio" name="frequency" value="daily"> Daily</label>
+            <label class="opt"><input type="radio" name="frequency" value="weekly"> Weekly</label>
+            <label class="opt"><input type="radio" name="frequency" value="monthly"> Monthly</label>
+          </fieldset>
+          <div class="error-msg" id="frequency-error"></div>
+        </div>
+
+        <div class="field">
+          <fieldset id="topics">
+            <legend>Topics of interest</legend>
+            <div class="checks">
+              <label class="opt"><input type="checkbox" name="topics" value="ai"> AI &amp; ML</label>
+              <label class="opt"><input type="checkbox" name="topics" value="startups"> Startups</label>
+              <label class="opt"><input type="checkbox" name="topics" value="security"> Security</label>
+              <label class="opt"><input type="checkbox" name="topics" value="design"> Design</label>
+              <label class="opt"><input type="checkbox" name="topics" value="hardware"> Hardware</label>
+              <label class="opt"><input type="checkbox" name="topics" value="culture"> Culture</label>
+            </div>
+          </fieldset>
+          <div class="error-msg" id="topics-error"></div>
+        </div>
+
+        <div class="field">
+          <label class="consent">
+            <input type="checkbox" id="consent" name="consent" value="yes">
+            <span>I agree to receive marketing emails from The Daily Ping and accept the terms.</span>
+          </label>
+          <div class="error-msg" id="consent-error"></div>
+        </div>
+
+        <button type="submit">Subscribe</button>
+
+        <div id="result" class="result" role="status" aria-live="polite" hidden></div>
+      </form>
+    </div>
+
+    <footer>The Daily Ping · 500 Signal St · You can unsubscribe in one click.</footer>
+  </div>
+
+  <script>
+    (function () {
+      var form = document.getElementById('newsletter-form');
+      var result = document.getElementById('result');
+      var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      function clearErrors() {
+        form.querySelectorAll('.field-error').forEach(function (el) { el.classList.remove('field-error'); });
+        form.querySelectorAll('.error-msg').forEach(function (el) { el.textContent = ''; });
+      }
+
+      function fail(id, msg, errId) {
+        var control = document.getElementById(id);
+        if (control) control.classList.add('field-error');
+        var box = document.getElementById(errId || (id + '-error'));
+        if (box) box.textContent = msg;
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearErrors();
+        var failures = [];
+
+        // Honeypot: if filled, silently treat as spam (single failure, no field surfaced to humans).
+        var honeypot = document.getElementById('website').value.trim();
+        if (honeypot !== '') {
+          failures.push({ fieldId: 'website', message: 'Submission blocked as spam.' });
+          renderResult(failures);
+          return;
+        }
+
+        var email = document.getElementById('email').value.trim();
+        if (!email) { failures.push({ fieldId: 'email', message: 'Email is required.' }); fail('email', 'Email is required.'); }
+        else if (!emailRe.test(email)) { failures.push({ fieldId: 'email', message: 'Enter a valid email address.' }); fail('email', 'Enter a valid email address.'); }
+
+        var firstName = document.getElementById('first-name').value.trim();
+        if (!firstName) { failures.push({ fieldId: 'first-name', message: 'First name is required.' }); fail('first-name', 'First name is required.'); }
+
+        var freq = form.querySelector('input[name="frequency"]:checked');
+        if (!freq) { failures.push({ fieldId: 'frequency', message: 'Choose a frequency.' }); fail('frequency', 'Choose a frequency.'); }
+
+        var topics = form.querySelectorAll('input[name="topics"]:checked');
+        if (topics.length === 0) { failures.push({ fieldId: 'topics', message: 'Select at least one topic.' }); fail('topics', 'Select at least one topic.'); }
+
+        var consent = document.getElementById('consent');
+        if (!consent.checked) { failures.push({ fieldId: 'consent', message: 'You must consent to receive emails.' }); fail('consent', 'You must consent to receive emails.'); }
+
+        renderResult(failures);
+      });
+
+      function renderResult(failures) {
+        result.hidden = false;
+        if (failures.length === 0) {
+          result.className = 'result pass';
+          result.innerHTML = '✓ Submission passed — all fields valid.';
+        } else {
+          result.className = 'result fail';
+          var items = failures.map(function (f) { return '<li>' + f.message + '</li>'; }).join('');
+          result.innerHTML = '<h2>✗ Submission failed — ' + failures.length + ' issue(s)</h2><ul>' + items + '</ul>';
+        }
+        result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    })();
+  </script>
+</body>
+</html>

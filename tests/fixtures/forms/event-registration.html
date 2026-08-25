@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DevSummit 2026 — Attendee Registration</title>
+  <style>
+    :root {
+      --brand: #4338ca;
+      --brand-dark: #312e81;
+      --brand-soft: #eef2ff;
+      --ink: #1e1b2e;
+      --muted: #6b7280;
+      --line: #d9dbe4;
+      --ok: #15803d;
+      --ok-bg: #dcfce7;
+      --bad: #b91c1c;
+      --bad-bg: #fee2e2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f4f5fb;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .page { max-width: 860px; margin: 0 auto; padding: 24px 20px 64px; }
+    header.brand {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--brand-dark);
+      color: #fff;
+      padding: 22px 26px;
+      border-radius: 14px 14px 0 0;
+    }
+    .logo {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: linear-gradient(135deg, #818cf8, #4338ca);
+      display: grid; place-items: center;
+      font-weight: 800; font-size: 20px; letter-spacing: -1px;
+    }
+    header.brand h1 { margin: 0; font-size: 22px; }
+    header.brand p { margin: 2px 0 0; opacity: .8; font-size: 13px; }
+    form {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-top: none;
+      border-radius: 0 0 14px 14px;
+      padding: 26px;
+    }
+    fieldset {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      margin: 0 0 22px;
+      padding: 16px 18px 20px;
+    }
+    legend { font-weight: 700; color: var(--brand-dark); padding: 0 6px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .field { margin-bottom: 4px; }
+    .field.full { grid-column: 1 / -1; }
+    label.lbl { display: block; font-weight: 600; font-size: 13px; margin-bottom: 5px; }
+    .req { color: var(--brand); }
+    input[type=text], input[type=email], select {
+      width: 100%; padding: 9px 11px; font-size: 14px;
+      border: 1px solid var(--line); border-radius: 8px;
+      background: #fff; color: var(--ink); font-family: inherit;
+    }
+    select[multiple] { padding: 4px; }
+    select[multiple] option { padding: 5px 7px; }
+    input:focus, select:focus { outline: 2px solid var(--brand); border-color: var(--brand); }
+    .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .choices { display: flex; flex-wrap: wrap; gap: 10px 18px; }
+    .choice { display: flex; align-items: center; gap: 7px; font-size: 14px; }
+    .choice input { width: 16px; height: 16px; accent-color: var(--brand); }
+    .field-error input, .field-error select { border-color: var(--bad); background: #fff6f6; }
+    .field-error.choices-wrap { outline: 1px solid var(--bad); border-radius: 8px; padding: 8px; background: #fff6f6; }
+    .error-msg { display: block; color: var(--bad); font-size: 12px; margin-top: 5px; min-height: 0; }
+    .actions { margin-top: 8px; }
+    button[type=submit] {
+      background: var(--brand); color: #fff; border: none;
+      padding: 12px 26px; font-size: 15px; font-weight: 700;
+      border-radius: 9px; cursor: pointer;
+    }
+    button[type=submit]:hover { background: var(--brand-dark); }
+    .result {
+      margin-top: 22px; padding: 16px 18px; border-radius: 10px;
+      font-size: 14px; border: 1px solid transparent;
+    }
+    .result h2 { margin: 0 0 6px; font-size: 16px; }
+    .result ul { margin: 6px 0 0; padding-left: 20px; }
+    .result.pass { background: var(--ok-bg); border-color: #86efac; color: var(--ok); }
+    .result.fail { background: var(--bad-bg); border-color: #fca5a5; color: var(--bad); }
+    @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="brand">
+      <div class="logo">DS</div>
+      <div>
+        <h1>DevSummit 2026 — Attendee Registration</h1>
+        <p>Three days of talks, workshops, and hallway track. Reserve your spot.</p>
+      </div>
+    </header>
+
+    <form id="registration-form" novalidate>
+      <fieldset>
+        <legend>Your details</legend>
+        <div class="grid">
+          <div class="field">
+            <label class="lbl" for="first-name">First name <span class="req">*</span></label>
+            <input type="text" id="first-name" name="first_name" autocomplete="given-name">
+            <span class="error-msg" data-for="first-name"></span>
+          </div>
+          <div class="field">
+            <label class="lbl" for="last-name">Last name <span class="req">*</span></label>
+            <input type="text" id="last-name" name="last_name" autocomplete="family-name">
+            <span class="error-msg" data-for="last-name"></span>
+          </div>
+          <div class="field">
+            <label class="lbl" for="email">Email <span class="req">*</span></label>
+            <input type="email" id="email" name="email" autocomplete="email">
+            <span class="error-msg" data-for="email"></span>
+          </div>
+          <div class="field">
+            <label class="lbl" for="company">Company</label>
+            <input type="text" id="company" name="company" autocomplete="organization">
+            <span class="error-msg" data-for="company"></span>
+          </div>
+          <div class="field full">
+            <label class="lbl" for="job-title">Job title</label>
+            <input type="text" id="job-title" name="job_title" autocomplete="organization-title">
+            <span class="error-msg" data-for="job-title"></span>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Ticket &amp; sessions</legend>
+        <div class="grid">
+          <div class="field">
+            <label class="lbl" for="ticket-tier">Ticket tier <span class="req">*</span></label>
+            <select id="ticket-tier" name="ticket_tier">
+              <option value="">Select a tier…</option>
+              <option value="general">General Admission</option>
+              <option value="pro">Pro Pass</option>
+              <option value="vip">VIP Pass</option>
+            </select>
+            <span class="error-msg" data-for="ticket-tier"></span>
+          </div>
+          <div class="field">
+            <label class="lbl" for="sessions">Sessions <span class="req">*</span></label>
+            <select id="sessions" name="sessions" multiple size="5">
+              <option value="keynote">Opening Keynote</option>
+              <option value="rust-workshop">Rust Systems Workshop</option>
+              <option value="ai-agents">Building AI Agents</option>
+              <option value="scaling-postgres">Scaling Postgres</option>
+              <option value="design-systems">Design Systems at Scale</option>
+              <option value="security-track">Security Deep Dive</option>
+            </select>
+            <div class="hint">Hold Ctrl/Cmd to select multiple.</div>
+            <span class="error-msg" data-for="sessions"></span>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Preferences</legend>
+        <div class="field full">
+          <label class="lbl">Dietary restrictions</label>
+          <div class="choices choices-wrap" id="dietary-group">
+            <label class="choice"><input type="checkbox" name="dietary" value="vegetarian"> Vegetarian</label>
+            <label class="choice"><input type="checkbox" name="dietary" value="vegan"> Vegan</label>
+            <label class="choice"><input type="checkbox" name="dietary" value="gluten-free"> Gluten-free</label>
+            <label class="choice"><input type="checkbox" name="dietary" value="none"> None</label>
+          </div>
+          <span class="error-msg" data-for="dietary-group"></span>
+        </div>
+
+        <div class="field full" style="margin-top:16px">
+          <label class="lbl">T-shirt size <span class="req">*</span></label>
+          <div class="choices choices-wrap" id="tshirt-group">
+            <label class="choice"><input type="radio" name="tshirt" value="s"> S</label>
+            <label class="choice"><input type="radio" name="tshirt" value="m"> M</label>
+            <label class="choice"><input type="radio" name="tshirt" value="l"> L</label>
+            <label class="choice"><input type="radio" name="tshirt" value="xl"> XL</label>
+            <label class="choice"><input type="radio" name="tshirt" value="xxl"> XXL</label>
+          </div>
+          <span class="error-msg" data-for="tshirt-group"></span>
+        </div>
+
+        <div class="field full" style="margin-top:16px">
+          <div class="choices choices-wrap" id="conduct-wrap">
+            <label class="choice">
+              <input type="checkbox" id="code-of-conduct" name="code_of_conduct" value="agree">
+              I agree to the DevSummit Code of Conduct <span class="req">*</span>
+            </label>
+          </div>
+          <span class="error-msg" data-for="code-of-conduct"></span>
+        </div>
+      </fieldset>
+
+      <div class="actions">
+        <button type="submit">Complete registration</button>
+      </div>
+
+      <div id="result" class="result" role="status" aria-live="polite" hidden></div>
+    </form>
+  </div>
+
+  <script>
+    (function () {
+      var form = document.getElementById('registration-form');
+      var result = document.getElementById('result');
+      var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      function clearErrors() {
+        form.querySelectorAll('.field-error').forEach(function (el) {
+          el.classList.remove('field-error');
+        });
+        form.querySelectorAll('.error-msg').forEach(function (el) { el.textContent = ''; });
+      }
+
+      function fail(failures, id, wrapperSelector, message) {
+        failures.push({ fieldId: id, message: message });
+        var msg = form.querySelector('.error-msg[data-for="' + id + '"]');
+        if (msg) msg.textContent = message;
+        var target = wrapperSelector ? form.querySelector(wrapperSelector) : null;
+        if (!target) {
+          var ctrl = document.getElementById(id);
+          target = ctrl ? ctrl.closest('.field') || ctrl : null;
+        }
+        if (target) target.classList.add('field-error');
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearErrors();
+        var f = [];
+
+        var firstName = document.getElementById('first-name');
+        if (!firstName.value.trim()) fail(f, 'first-name', null, 'First name is required.');
+
+        var lastName = document.getElementById('last-name');
+        if (!lastName.value.trim()) fail(f, 'last-name', null, 'Last name is required.');
+
+        var email = document.getElementById('email');
+        if (!email.value.trim()) fail(f, 'email', null, 'Email is required.');
+        else if (!emailRe.test(email.value.trim())) fail(f, 'email', null, 'Enter a valid email address.');
+
+        var tier = document.getElementById('ticket-tier');
+        if (!tier.value) fail(f, 'ticket-tier', null, 'Please choose a ticket tier.');
+
+        var sessions = document.getElementById('sessions');
+        var picked = Array.prototype.filter.call(sessions.options, function (o) { return o.selected; });
+        if (picked.length === 0) fail(f, 'sessions', null, 'Select at least one session.');
+
+        var tshirt = form.querySelector('input[name="tshirt"]:checked');
+        if (!tshirt) fail(f, 'tshirt-group', '#tshirt-group', 'Please choose a t-shirt size.');
+
+        var conduct = document.getElementById('code-of-conduct');
+        if (!conduct.checked) fail(f, 'code-of-conduct', '#conduct-wrap', 'You must agree to the Code of Conduct.');
+
+        if (f.length) {
+          result.className = 'result fail';
+          result.innerHTML = '<h2>✗ Submission failed — ' + f.length + ' issue(s)</h2>';
+          var ul = document.createElement('ul');
+          f.forEach(function (item) {
+            var li = document.createElement('li');
+            li.textContent = item.message;
+            ul.appendChild(li);
+          });
+          result.appendChild(ul);
+        } else {
+          result.className = 'result pass';
+          result.textContent = '✓ Submission passed — all fields valid.';
+        }
+        result.hidden = false;
+        result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    })();
+  </script>
+</body>
+</html>

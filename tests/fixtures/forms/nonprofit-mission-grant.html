@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Community Roots — Nonprofit Mission Grant</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Helvetica Neue", Arial, sans-serif; background: #eef4f1; color: #1e2b26; line-height: 1.5; }
+    main { max-width: 700px; margin: 0 auto; padding: 36px 20px 60px; }
+    .banner { background: #14503c; color: #fff; padding: 22px 24px; border-radius: 12px 12px 0 0; }
+    .banner h1 { margin: 0; font-size: 22px; }
+    .banner p { margin: 4px 0 0; opacity: .85; font-size: 14px; }
+    .body { background: #fff; border: 1px solid #cdddd5; border-top: none; border-radius: 0 0 12px 12px; padding: 26px; }
+    fieldset { border: none; margin: 0 0 18px; padding: 0; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid #c4d2cb; border-radius: 8px; font-size: 15px; font-family: inherit; }
+    textarea { min-height: 120px; resize: vertical; }
+    button { padding: 12px 26px; font-size: 15px; font-weight: 600; color: #fff; background: #14503c; border: none; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="banner">
+      <h1>Community Roots Foundation</h1>
+      <p>Mission Impact Grant — Application</p>
+    </div>
+    <div class="body">
+      <form id="mission-form" novalidate>
+        <fieldset>
+          <label for="contact">Contact name</label>
+          <input type="text" id="contact" name="contact" autocomplete="name">
+        </fieldset>
+        <fieldset>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" autocomplete="email">
+        </fieldset>
+        <fieldset>
+          <label for="org">Organization name</label>
+          <input type="text" id="org" name="org" autocomplete="organization">
+        </fieldset>
+        <fieldset>
+          <label for="mission">Summarize your mission and goals</label>
+          <textarea id="mission" name="mission"></textarea>
+        </fieldset>
+        <fieldset>
+          <label for="ein">EIN</label>
+          <input type="text" id="ein" name="ein" placeholder="12-3456789">
+        </fieldset>
+        <fieldset>
+          <label for="program-area">Program area</label>
+          <select id="program-area" name="program_area">
+            <option value="">Choose one…</option>
+            <option value="education">Education</option>
+            <option value="health">Health</option>
+            <option value="environment">Environment</option>
+            <option value="arts">Arts &amp; culture</option>
+          </select>
+        </fieldset>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DriveAway — Rental Car Pickup</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Roboto", Arial, sans-serif; background: #f4f6f8; color: #1f2933; line-height: 1.5; }
+    .page { max-width: 700px; margin: 0 auto; padding: 32px 20px 60px; }
+    h1 { font-size: 22px; margin: 0 0 4px; color: #b02a1f; }
+    .sub { color: #5b6470; margin: 0 0 22px; }
+    form { background: #fff; border: 1px solid #d7dde4; border-radius: 10px; padding: 24px; }
+    .field { margin-bottom: 18px; }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .row .field { flex: 1 1 200px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    input, select { width: 100%; padding: 10px 12px; border: 1px solid #ccd3db; border-radius: 8px; font-size: 15px; }
+    button { padding: 12px 26px; font-size: 15px; color: #fff; background: #b02a1f; border: none; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>DriveAway Rentals</h1>
+    <p class="sub">Reserve your vehicle pickup.</p>
+    <form id="rental-form" novalidate>
+      <div class="field">
+        <label for="full-name">Full name</label>
+        <input type="text" id="full-name" name="full_name" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" autocomplete="email">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="pickup">Pick-up date</label>
+          <input type="date" id="pickup" name="pickup">
+        </div>
+        <div class="field">
+          <label for="dropoff">Drop-off date</label>
+          <input type="date" id="dropoff" name="dropoff">
+        </div>
+      </div>
+      <div class="field">
+        <label for="phone">Phone number</label>
+        <input type="tel" id="phone" name="phone" autocomplete="tel">
+      </div>
+      <div class="field">
+        <label for="license">Driver's license number</label>
+        <input type="text" id="license" name="license">
+      </div>
+      <div class="field">
+        <label for="vehicle">Vehicle class</label>
+        <select id="vehicle" name="vehicle">
+          <option value="">Select a class…</option>
+          <option value="economy">Economy</option>
+          <option value="midsize">Midsize</option>
+          <option value="suv">SUV</option>
+          <option value="luxury">Luxury</option>
+        </select>
+      </div>
+      <button type="submit">Confirm pickup</button>
+    </form>
+  </div>
+</body>
+</html>

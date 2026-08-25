@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>City Marathon — Runner Registration</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Arial Narrow", Arial, sans-serif; background: #eef2f7; color: #1c2733; line-height: 1.5; }
+    .page { max-width: 700px; margin: 0 auto; padding: 34px 20px 60px; }
+    h1 { font-size: 25px; margin: 0 0 4px; color: #d13b1f; text-transform: uppercase; letter-spacing: 1px; }
+    .sub { color: #5b6470; margin: 0 0 24px; }
+    form { background: #fff; border: 1px solid #d3dbe4; border-radius: 10px; padding: 24px; }
+    .field { margin-bottom: 18px; }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .row .field { flex: 1 1 200px; }
+    label { display: block; font-weight: 700; margin-bottom: 6px; font-size: 14px; }
+    input, select { width: 100%; padding: 10px 12px; border: 1px solid #c8d1db; border-radius: 8px; font-size: 15px; }
+    button { padding: 12px 28px; font-size: 15px; font-weight: 700; color: #fff; background: #d13b1f; border: none; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>City Marathon</h1>
+    <p class="sub">26.2 miles through the heart of downtown. Register below.</p>
+    <form id="marathon-form" novalidate>
+      <div class="field">
+        <label for="full-name">Full name</label>
+        <input type="text" id="full-name" name="full_name" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" autocomplete="email">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="dob">Date of birth</label>
+          <input type="date" id="dob" name="dob" autocomplete="bday">
+        </div>
+        <div class="field">
+          <label for="finish">Estimated finish time</label>
+          <input type="text" id="finish" name="finish" placeholder="e.g. 4:15:00">
+        </div>
+      </div>
+      <div class="field">
+        <label for="ec-name">Who should we contact in an emergency?</label>
+        <input type="text" id="ec-name" name="ec_name">
+      </div>
+      <div class="field">
+        <label for="ec-phone">Emergency contact phone</label>
+        <input type="tel" id="ec-phone" name="ec_phone">
+      </div>
+      <div class="field">
+        <label for="shirt">T-shirt size</label>
+        <select id="shirt" name="shirt">
+          <option value="">Select a size…</option>
+          <option value="s">S</option>
+          <option value="m">M</option>
+          <option value="l">L</option>
+          <option value="xl">XL</option>
+        </select>
+      </div>
+      <button type="submit">Register to run</button>
+    </form>
+  </div>
+</body>
+</html>

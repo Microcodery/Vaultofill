@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Old Town Walks — Guided Tour Booking</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Palatino Linotype", Palatino, serif; background: #fdf6ee; color: #3a2c1e; line-height: 1.55; }
+    .page { max-width: 620px; margin: 0 auto; padding: 38px 22px 64px; }
+    h1 { font-size: 24px; margin: 0 0 6px; }
+    .sub { color: #7a6a58; margin: 0 0 26px; }
+    .field { margin-bottom: 20px; }
+    label { display: block; font-weight: bold; margin-bottom: 6px; font-size: 15px; }
+    input { width: 100%; padding: 10px 12px; border: 1px solid #d8c9b6; border-radius: 6px; font-size: 15px; background: #fff; font-family: inherit; }
+    button { padding: 12px 26px; font-size: 15px; color: #fff; background: #8a5a2b; border: none; border-radius: 6px; cursor: pointer; font-family: inherit; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Old Town Walks</h1>
+    <p class="sub">Book a guided walking tour of the historic quarter.</p>
+    <form id="tour-form" novalidate>
+      <div class="field">
+        <label for="full-name">Full name</label>
+        <input type="text" id="full-name" name="full_name" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="start-date">Tour start date</label>
+        <input type="date" id="start-date" name="start_date">
+      </div>
+      <div class="field">
+        <label for="group-size">Group size</label>
+        <input type="number" id="group-size" name="group_size" min="1" step="1">
+      </div>
+      <div class="field">
+        <label for="allergies">Food allergies</label>
+        <input type="text" id="allergies" name="allergies" placeholder="Peanuts, shellfish, none…">
+      </div>
+      <div class="field">
+        <label for="language">Preferred language</label>
+        <input type="text" id="language" name="language" placeholder="English, Spanish…">
+      </div>
+      <button type="submit">Book tour</button>
+    </form>
+  </div>
+</body>
+</html>

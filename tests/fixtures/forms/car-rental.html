@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wheelhaus Car Rental — Book Your Ride</title>
+  <style>
+    :root {
+      --brand: #0f766e;
+      --brand-dark: #115e59;
+      --accent: #f59e0b;
+      --ink: #0b201d;
+      --muted: #5b6b68;
+      --line: #cfe0dc;
+      --ok: #15803d;
+      --ok-bg: #dcfce7;
+      --bad: #b91c1c;
+      --bad-bg: #fee2e2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+      background: #eef4f2;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .page { max-width: 880px; margin: 0 auto; padding: 24px 20px 64px; }
+    header.brand {
+      background: var(--brand);
+      color: #fff;
+      padding: 24px 26px;
+      border-radius: 14px 14px 0 0;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .logo {
+      width: 46px; height: 46px; border-radius: 12px; background: #fff;
+      display: grid; place-items: center; font-size: 24px;
+    }
+    header.brand h1 { margin: 0; font-size: 23px; }
+    header.brand p { margin: 3px 0 0; opacity: .9; font-size: 13px; }
+    .accentbar { height: 5px; background: var(--accent); }
+    form {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-top: none;
+      border-radius: 0 0 14px 14px;
+      padding: 26px;
+    }
+    .section-title {
+      font-weight: 700; color: var(--brand-dark); font-size: 15px;
+      margin: 6px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--line);
+    }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
+    .full { grid-column: 1 / -1; }
+    /* Wrapped-label pattern: label wraps its control, no for/id linkage */
+    label.wrap {
+      display: block; font-weight: 600; font-size: 13px; margin-bottom: 4px;
+    }
+    label.wrap input[type=text],
+    label.wrap input[type=email],
+    label.wrap input[type=number],
+    label.wrap input[type=datetime-local],
+    label.wrap select {
+      display: block; width: 100%; margin-top: 5px;
+      padding: 9px 11px; font-size: 14px; font-weight: 400;
+      border: 1px solid var(--line); border-radius: 8px;
+      background: #fff; color: var(--ink); font-family: inherit;
+    }
+    label.wrap input:focus, label.wrap select:focus {
+      outline: 2px solid var(--brand); border-color: var(--brand);
+    }
+    fieldset.radios { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; margin: 0; }
+    fieldset.radios legend { font-weight: 600; font-size: 13px; padding: 0 6px; color: var(--ink); }
+    .radio-row { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: 4px; }
+    .radio-row label { display: flex; align-items: center; gap: 7px; font-size: 14px; }
+    .radio-row input { accent-color: var(--brand); width: 16px; height: 16px; }
+    label.checkline { display: flex; align-items: center; gap: 9px; font-size: 14px; font-weight: 600; }
+    label.checkline input { accent-color: var(--brand); width: 17px; height: 17px; }
+    .error-msg { display: block; color: var(--bad); font-size: 12px; margin-top: 5px; }
+    .field-error input, .field-error select { border-color: var(--bad) !important; background: #fff6f6; }
+    fieldset.radios.field-error { border-color: var(--bad); background: #fff6f6; }
+    .actions { margin-top: 20px; }
+    button[type=submit] {
+      background: var(--brand); color: #fff; border: none;
+      padding: 12px 28px; font-size: 15px; font-weight: 700;
+      border-radius: 9px; cursor: pointer;
+    }
+    button[type=submit]:hover { background: var(--brand-dark); }
+    .result { margin-top: 22px; padding: 16px 18px; border-radius: 10px; font-size: 14px; border: 1px solid transparent; }
+    .result h2 { margin: 0 0 6px; font-size: 16px; }
+    .result ul { margin: 6px 0 0; padding-left: 20px; }
+    .result.pass { background: var(--ok-bg); border-color: #86efac; color: var(--ok); }
+    .result.fail { background: var(--bad-bg); border-color: #fca5a5; color: var(--bad); }
+    .block { margin-bottom: 16px; }
+    @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="brand">
+      <div class="logo">🚗</div>
+      <div>
+        <h1>Wheelhaus Car Rental</h1>
+        <p>Pick up. Drive off. Return anywhere. Reserve in minutes.</p>
+      </div>
+    </header>
+    <div class="accentbar"></div>
+
+    <form id="rental-form" novalidate>
+      <div class="section-title">Trip details</div>
+      <div class="grid">
+        <div class="block">
+          <label class="wrap">Pickup location
+            <select id="pickup-location" name="pickup_location">
+              <option value="">Select a branch…</option>
+              <option value="sfo">San Francisco Intl (SFO)</option>
+              <option value="lax">Los Angeles Intl (LAX)</option>
+              <option value="jfk">New York JFK</option>
+              <option value="ord">Chicago O'Hare (ORD)</option>
+              <option value="den">Denver Intl (DEN)</option>
+            </select>
+          </label>
+          <span class="error-msg" data-for="pickup-location"></span>
+        </div>
+        <div class="block">
+          <label class="wrap">Drop-off location
+            <select id="dropoff-location" name="dropoff_location">
+              <option value="">Select a branch…</option>
+              <option value="sfo">San Francisco Intl (SFO)</option>
+              <option value="lax">Los Angeles Intl (LAX)</option>
+              <option value="jfk">New York JFK</option>
+              <option value="ord">Chicago O'Hare (ORD)</option>
+              <option value="den">Denver Intl (DEN)</option>
+            </select>
+          </label>
+          <span class="error-msg" data-for="dropoff-location"></span>
+        </div>
+        <div class="block">
+          <label class="wrap">Pickup date &amp; time
+            <input type="datetime-local" id="pickup-datetime" name="pickup_datetime">
+          </label>
+          <span class="error-msg" data-for="pickup-datetime"></span>
+        </div>
+        <div class="block">
+          <label class="wrap">Drop-off date &amp; time
+            <input type="datetime-local" id="dropoff-datetime" name="dropoff_datetime">
+          </label>
+          <span class="error-msg" data-for="dropoff-datetime"></span>
+        </div>
+      </div>
+
+      <div class="section-title">Vehicle</div>
+      <div class="block full">
+        <fieldset class="radios" id="car-class-group">
+          <legend>Car class</legend>
+          <div class="radio-row">
+            <label><input type="radio" name="car_class" value="economy"> Economy</label>
+            <label><input type="radio" name="car_class" value="suv"> SUV</label>
+            <label><input type="radio" name="car_class" value="luxury"> Luxury</label>
+          </div>
+        </fieldset>
+        <span class="error-msg" data-for="car-class-group"></span>
+      </div>
+      <div class="grid">
+        <div class="block">
+          <label class="wrap">Driver age
+            <input type="number" id="driver-age" name="driver_age" min="21" step="1" placeholder="21+">
+          </label>
+          <span class="error-msg" data-for="driver-age"></span>
+        </div>
+        <div class="block" style="align-self:end">
+          <label class="checkline">
+            <input type="checkbox" id="add-insurance" name="add_insurance" value="yes">
+            Add full collision insurance (+$18/day)
+          </label>
+          <span class="error-msg" data-for="add-insurance"></span>
+        </div>
+      </div>
+
+      <div class="section-title">Driver</div>
+      <div class="grid">
+        <div class="block">
+          <label class="wrap">Driver name
+            <input type="text" id="driver-name" name="driver_name" autocomplete="name">
+          </label>
+          <span class="error-msg" data-for="driver-name"></span>
+        </div>
+        <div class="block">
+          <label class="wrap">Driver's license number
+            <input type="text" id="license-number" name="license_number">
+          </label>
+          <span class="error-msg" data-for="license-number"></span>
+        </div>
+        <div class="block full">
+          <label class="wrap">Email
+            <input type="email" id="email" name="email" autocomplete="email">
+          </label>
+          <span class="error-msg" data-for="email"></span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="submit">Reserve vehicle</button>
+      </div>
+
+      <div id="result" class="result" role="status" aria-live="polite" hidden></div>
+    </form>
+  </div>
+
+  <script>
+    (function () {
+      var form = document.getElementById('rental-form');
+      var result = document.getElementById('result');
+      var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      function clearErrors() {
+        form.querySelectorAll('.field-error').forEach(function (el) { el.classList.remove('field-error'); });
+        form.querySelectorAll('.error-msg').forEach(function (el) { el.textContent = ''; });
+      }
+
+      function fail(failures, id, message, wrapperSelector) {
+        failures.push({ fieldId: id, message: message });
+        var msg = form.querySelector('.error-msg[data-for="' + id + '"]');
+        if (msg) msg.textContent = message;
+        var target = wrapperSelector ? form.querySelector(wrapperSelector) : null;
+        if (!target) {
+          var ctrl = document.getElementById(id);
+          target = ctrl ? ctrl.closest('.block') || ctrl : null;
+        }
+        if (target) target.classList.add('field-error');
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearErrors();
+        var f = [];
+
+        var pickupLoc = document.getElementById('pickup-location');
+        if (!pickupLoc.value) fail(f, 'pickup-location', 'Choose a pickup location.');
+
+        var dropoffLoc = document.getElementById('dropoff-location');
+        if (!dropoffLoc.value) fail(f, 'dropoff-location', 'Choose a drop-off location.');
+
+        var pickupDt = document.getElementById('pickup-datetime');
+        var dropoffDt = document.getElementById('dropoff-datetime');
+        var pickupVal = pickupDt.value;
+        var dropoffVal = dropoffDt.value;
+        if (!pickupVal) fail(f, 'pickup-datetime', 'Pickup date & time is required.');
+        if (!dropoffVal) fail(f, 'dropoff-datetime', 'Drop-off date & time is required.');
+        if (pickupVal && dropoffVal && new Date(dropoffVal) <= new Date(pickupVal)) {
+          fail(f, 'dropoff-datetime', 'Drop-off must be after pickup.');
+        }
+
+        var carClass = form.querySelector('input[name="car_class"]:checked');
+        if (!carClass) fail(f, 'car-class-group', 'Select a car class.', '#car-class-group');
+
+        var age = document.getElementById('driver-age');
+        var ageVal = age.value.trim();
+        if (!ageVal) fail(f, 'driver-age', 'Driver age is required.');
+        else if (isNaN(Number(ageVal)) || Number(ageVal) < 21) fail(f, 'driver-age', 'Driver must be at least 21.');
+
+        var name = document.getElementById('driver-name');
+        if (!name.value.trim()) fail(f, 'driver-name', 'Driver name is required.');
+
+        var license = document.getElementById('license-number');
+        if (!license.value.trim()) fail(f, 'license-number', 'License number is required.');
+
+        var email = document.getElementById('email');
+        if (!email.value.trim()) fail(f, 'email', 'Email is required.');
+        else if (!emailRe.test(email.value.trim())) fail(f, 'email', 'Enter a valid email address.');
+
+        if (f.length) {
+          result.className = 'result fail';
+          result.innerHTML = '<h2>✗ Submission failed — ' + f.length + ' issue(s)</h2>';
+          var ul = document.createElement('ul');
+          f.forEach(function (item) {
+            var li = document.createElement('li');
+            li.textContent = item.message;
+            ul.appendChild(li);
+          });
+          result.appendChild(ul);
+        } else {
+          result.className = 'result pass';
+          result.textContent = '✓ Submission passed — all fields valid.';
+        }
+        result.hidden = false;
+        result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    })();
+  </script>
+</body>
+</html>

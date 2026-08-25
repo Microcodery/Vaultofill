@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nimbus Labs — Apply: Software Engineer</title>
+  <style>
+    :root {
+      --brand: #d97706;
+      --brand-dark: #92400e;
+      --accent: #f59e0b;
+      --ink: #1e2233;
+      --muted: #6b7280;
+      --line: #e3e5ee;
+      --bg: #f5f6fb;
+      --ok: #15803d;
+      --bad: #dc2626;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.45;
+    }
+    header.brand {
+      background: linear-gradient(120deg, var(--brand-dark), var(--brand));
+      color: #fff;
+      padding: 24px;
+    }
+    header.brand .row { display: flex; align-items: center; gap: 12px; }
+    header.brand .logo {
+      width: 34px; height: 34px; border-radius: 9px;
+      background: var(--accent); color: var(--brand-dark);
+      display: grid; place-items: center; font-weight: 800; font-size: 18px;
+    }
+    header.brand h1 { margin: 0; font-size: 22px; }
+    header.brand p { margin: 8px 0 0; opacity: .9; font-size: 14px; }
+    main { max-width: 720px; margin: 24px auto; padding: 0 16px 48px; }
+    form {
+      background: #fff; border: 1px solid var(--line); border-radius: 12px;
+      padding: 22px; box-shadow: 0 6px 24px rgba(49,46,129,.06);
+    }
+    .field { margin-bottom: 16px; }
+    label.field-label, span.field-label { display: block; font-weight: 600; margin-bottom: 6px; }
+    .hint { color: var(--muted); font-weight: 400; font-size: 12px; }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="url"],
+    input[type="number"], input[type="file"], select {
+      width: 100%; padding: 9px 11px; border: 1px solid var(--line);
+      border-radius: 8px; font: inherit; background: #fdfdff;
+    }
+    input[type="number"] { max-width: 160px; }
+    input:focus, select:focus, [contenteditable]:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+    /* ARIA textbox: contenteditable divs standing in for native textareas */
+    .rich-textbox {
+      min-height: 96px; padding: 10px 12px; border: 1px solid var(--line);
+      border-radius: 8px; background: #fdfdff; overflow-y: auto;
+    }
+    .rich-textbox:empty::before {
+      content: attr(data-placeholder); color: var(--muted);
+    }
+
+    .yesno { display: flex; gap: 10px; }
+    .yesno label {
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 1px solid var(--line); border-radius: 8px; padding: 7px 14px; background: #fdfdff; cursor: pointer;
+    }
+
+    button[type="submit"] {
+      background: var(--brand); color: #fff; border: 0; border-radius: 8px;
+      padding: 12px 22px; font-size: 16px; font-weight: 700; cursor: pointer;
+    }
+    button[type="submit"]:hover { background: var(--brand-dark); }
+
+    .error-msg { color: var(--bad); font-size: 12px; margin-top: 4px; }
+    .field-error input, .field-error select, .field-error .rich-textbox { border-color: var(--bad); background: #fef2f2; }
+    .field-error > .field-label { color: var(--bad); }
+    .field-error .yesno label { border-color: var(--bad); }
+
+    .result { margin-top: 18px; padding: 14px 16px; border-radius: 10px; font-weight: 600; }
+    .result.pass { background: #ecfdf3; color: var(--ok); border: 1px solid #bbf7d0; }
+    .result.fail { background: #fef2f2; color: var(--bad); border: 1px solid #fecaca; }
+    .result h2 { margin: 0 0 6px; font-size: 16px; }
+    .result ul { margin: 6px 0 0 18px; padding: 0; }
+  </style>
+</head>
+<body>
+  <header class="brand">
+    <div class="row">
+      <div class="logo" aria-hidden="true">N</div>
+      <h1>Nimbus Labs — Careers</h1>
+    </div>
+    <p>Software Engineer, Platform · Remote · Apply below</p>
+  </header>
+
+  <main>
+    <form id="application-form" novalidate>
+      <div class="field" id="full-name-field">
+        <label class="field-label" for="full-name">Full name</label>
+        <input type="text" name="full_name" id="full-name" autocomplete="name">
+        <div class="error-msg" id="full-name-error"></div>
+      </div>
+
+      <div class="field" id="email-field">
+        <label class="field-label" for="email">Email</label>
+        <input type="email" name="email" id="email" autocomplete="email">
+        <div class="error-msg" id="email-error"></div>
+      </div>
+
+      <div class="field" id="phone-field">
+        <label class="field-label" for="phone">Phone</label>
+        <input type="tel" name="phone" id="phone" autocomplete="tel" placeholder="(555) 123-4567">
+        <div class="error-msg" id="phone-error"></div>
+      </div>
+
+      <div class="field" id="linkedin-field">
+        <label class="field-label" for="linkedin">LinkedIn URL <span class="hint">(https://…)</span></label>
+        <input type="url" name="linkedin_url" id="linkedin" placeholder="https://www.linkedin.com/in/you">
+        <div class="error-msg" id="linkedin-error"></div>
+      </div>
+
+      <div class="field" id="resume-field">
+        <label class="field-label" for="resume">Resume <span class="hint">(PDF or DOCX)</span></label>
+        <input type="file" name="resume" id="resume" accept=".pdf,.doc,.docx">
+        <div class="error-msg" id="resume-error"></div>
+      </div>
+
+      <div class="field" id="experience-field">
+        <label class="field-label" for="experience">Years of experience</label>
+        <input type="number" name="years_experience" id="experience" min="0" max="50" step="1">
+        <div class="error-msg" id="experience-error"></div>
+      </div>
+
+      <div class="field" id="role-field">
+        <label class="field-label" for="desired-role">Desired role</label>
+        <select name="desired_role" id="desired-role">
+          <option value="">Select a role…</option>
+          <option value="frontend">Frontend Engineer</option>
+          <option value="backend">Backend Engineer</option>
+          <option value="fullstack">Full-Stack Engineer</option>
+          <option value="platform">Platform Engineer</option>
+          <option value="ml">ML Engineer</option>
+        </select>
+        <div class="error-msg" id="desired-role-error"></div>
+      </div>
+
+      <div class="field" id="cover-letter-field">
+        <span class="field-label" id="cover-letter-label">Cover letter</span>
+        <div class="rich-textbox" contenteditable="true" role="textbox" aria-multiline="true"
+             id="cover-letter" aria-label="Cover letter" aria-labelledby="cover-letter-label"
+             data-name="cover_letter" data-placeholder="Tell us why you're a great fit…"></div>
+        <div class="error-msg" id="cover-letter-error"></div>
+      </div>
+
+      <div class="field" id="summary-field">
+        <span class="field-label" id="summary-label">Short summary</span>
+        <div class="rich-textbox" contenteditable="true" role="textbox" aria-multiline="true"
+             id="summary" aria-label="Short professional summary" aria-labelledby="summary-label"
+             data-name="summary" data-placeholder="A two-sentence summary of your background…"></div>
+        <div class="error-msg" id="summary-error"></div>
+      </div>
+
+      <div class="field" id="authorized-field">
+        <span class="field-label">Are you authorized to work in this country?</span>
+        <div class="yesno" role="radiogroup" aria-label="Authorized to work">
+          <label><input type="radio" name="authorized" id="authorized-yes" value="yes"> Yes</label>
+          <label><input type="radio" name="authorized" id="authorized-no" value="no"> No</label>
+        </div>
+        <div class="error-msg" id="authorized-error"></div>
+      </div>
+
+      <button type="submit">Submit Application</button>
+      <div id="result" class="result" role="status" aria-live="polite" hidden></div>
+    </form>
+  </main>
+
+  <script>
+    (function () {
+      var form = document.getElementById('application-form');
+      var result = document.getElementById('result');
+
+      function setError(fieldId, message, failures) {
+        var field = document.getElementById(fieldId + '-field');
+        if (field) field.classList.add('field-error');
+        var msg = document.getElementById(fieldId + '-error');
+        if (msg) msg.textContent = message;
+        failures.push({ fieldId: fieldId, message: message });
+      }
+      function clearErrors() {
+        form.querySelectorAll('.field-error').forEach(function (el) { el.classList.remove('field-error'); });
+        form.querySelectorAll('.error-msg').forEach(function (el) { el.textContent = ''; });
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearErrors();
+        var failures = [];
+
+        var name = document.getElementById('full-name').value.trim();
+        if (!name) setError('full-name', 'Full name is required.', failures);
+
+        var email = document.getElementById('email').value.trim();
+        if (!email) setError('email', 'Email is required.', failures);
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) setError('email', 'Enter a valid email address.', failures);
+
+        var phoneRaw = document.getElementById('phone').value;
+        var digits = phoneRaw.replace(/\D/g, '');
+        if (!phoneRaw.trim()) setError('phone', 'Phone is required.', failures);
+        else if (digits.length < 10) setError('phone', 'Enter a valid phone number (at least 10 digits).', failures);
+
+        var linkedin = document.getElementById('linkedin').value.trim();
+        if (!linkedin) setError('linkedin', 'LinkedIn URL is required.', failures);
+        else if (!/^https?:\/\/[^\s.]+\.[^\s]+$/.test(linkedin)) setError('linkedin', 'Enter a valid http(s) URL.', failures);
+
+        var resume = document.getElementById('resume');
+        if (!resume.files || resume.files.length === 0) setError('resume', 'Please attach your resume.', failures);
+
+        var expEl = document.getElementById('experience');
+        var expVal = expEl.value.trim();
+        var exp = parseInt(expVal, 10);
+        if (!expVal) setError('experience', 'Years of experience is required.', failures);
+        else if (isNaN(exp) || exp < 0 || exp > 50) setError('experience', 'Enter a number between 0 and 50.', failures);
+
+        if (!document.getElementById('desired-role').value) setError('desired-role', 'Please select a desired role.', failures);
+
+        var cover = document.getElementById('cover-letter').textContent.trim();
+        if (!cover) setError('cover-letter', 'Cover letter cannot be empty.', failures);
+
+        var summary = document.getElementById('summary').textContent.trim();
+        if (!summary) setError('summary', 'Short summary cannot be empty.', failures);
+
+        if (!form.querySelector('input[name="authorized"]:checked'))
+          setError('authorized', 'Please answer the work-authorization question.', failures);
+
+        if (failures.length) {
+          result.className = 'result fail';
+          result.innerHTML = '<h2>✗ Submission failed — ' + failures.length + ' issue(s)</h2><ul>' +
+            failures.map(function (f) { return '<li>' + f.message + '</li>'; }).join('') + '</ul>';
+        } else {
+          result.className = 'result pass';
+          result.textContent = '✓ Submission passed — all fields valid.';
+        }
+        result.hidden = false;
+        result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    })();
+  </script>
+</body>
+</html>

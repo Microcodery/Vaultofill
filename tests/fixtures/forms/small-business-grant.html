@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mainstreet Fund — Small Business Grant Application</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f3f5f9; color: #1b2430; line-height: 1.5; }
+    .page { max-width: 720px; margin: 0 auto; padding: 32px 20px 64px; }
+    h1 { font-size: 24px; margin: 0 0 4px; }
+    .sub { color: #5c6675; margin: 0 0 24px; }
+    .card { background: #fff; border: 1px solid #d5dbe4; border-radius: 12px; padding: 26px; }
+    .field { margin-bottom: 18px; }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .row .field { flex: 1 1 220px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    .req { color: #d9534f; }
+    input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid #cbd3dd; border-radius: 8px; font-size: 15px; font-family: inherit; }
+    textarea { min-height: 110px; resize: vertical; }
+    button { margin-top: 8px; padding: 12px 24px; font-size: 16px; font-weight: 600; color: #fff; background: #2c6e49; border: none; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Mainstreet Community Fund</h1>
+    <p class="sub">Small Business Growth Grant — Application</p>
+
+    <div class="card">
+      <form id="grant-form" novalidate>
+        <div class="field">
+          <label for="full-name">Full name <span class="req">*</span></label>
+          <input type="text" id="full-name" name="full_name" autocomplete="name">
+        </div>
+
+        <div class="field">
+          <label for="email">Email address <span class="req">*</span></label>
+          <input type="email" id="email" name="email" autocomplete="email">
+        </div>
+
+        <div class="field">
+          <label for="company">Company name <span class="req">*</span></label>
+          <input type="text" id="company" name="company" autocomplete="organization">
+        </div>
+
+        <div class="field">
+          <label for="goals">What are your company's goals?</label>
+          <textarea id="goals" name="goals" placeholder="Tell us where you want to take the business over the next 1–3 years."></textarea>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="annual-revenue">Annual revenue</label>
+            <input type="number" id="annual-revenue" name="annual_revenue" min="0" step="1000">
+          </div>
+          <div class="field">
+            <label for="employees">Number of employees</label>
+            <input type="number" id="employees" name="employees" min="0" step="1">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="industry">Industry</label>
+          <select id="industry" name="industry">
+            <option value="">Select an industry…</option>
+            <option value="retail">Retail</option>
+            <option value="food">Food &amp; beverage</option>
+            <option value="services">Professional services</option>
+            <option value="manufacturing">Manufacturing</option>
+          </select>
+        </div>
+
+        <button type="submit">Submit application</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

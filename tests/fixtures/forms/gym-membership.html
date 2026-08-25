@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IronWorks Gym — Membership Signup</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Oswald", "Arial Narrow", sans-serif; background: #161616; color: #ededed; line-height: 1.5; }
+    .page { max-width: 640px; margin: 0 auto; padding: 38px 20px 64px; }
+    h1 { font-size: 28px; margin: 0 0 4px; text-transform: uppercase; letter-spacing: 2px; color: #f5c518; }
+    .sub { color: #9a9a9a; margin: 0 0 26px; }
+    .panel { background: #1f1f1f; border: 1px solid #333; border-radius: 10px; padding: 24px; }
+    .field { margin-bottom: 18px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    input { width: 100%; padding: 11px 12px; border: 1px solid #3a3a3a; border-radius: 8px; font-size: 15px; background: #161616; color: #ededed; }
+    fieldset { border: 1px solid #3a3a3a; border-radius: 8px; padding: 10px 14px; margin: 0 0 18px; }
+    legend { font-weight: 600; font-size: 14px; padding: 0 6px; }
+    .opt { display: inline-flex; align-items: center; gap: 8px; margin-right: 18px; font-weight: 400; }
+    .opt input { width: auto; }
+    button { padding: 12px 28px; font-size: 15px; font-weight: 700; color: #161616; background: #f5c518; border: none; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>IronWorks Gym</h1>
+    <p class="sub">Join today. First week on us.</p>
+    <div class="panel">
+      <form id="gym-form" novalidate>
+        <div class="field">
+          <label for="full-name">Full name</label>
+          <input type="text" id="full-name" name="full_name" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="dob">Date of birth</label>
+          <input type="date" id="dob" name="dob" autocomplete="bday">
+        </div>
+        <div class="field">
+          <label for="address">Street address</label>
+          <input type="text" id="address" name="address" autocomplete="street-address">
+        </div>
+        <div class="field">
+          <label for="ec-name">Emergency contact name</label>
+          <input type="text" id="ec-name" name="ec_name">
+        </div>
+        <fieldset>
+          <legend>Membership plan</legend>
+          <label class="opt"><input type="radio" name="plan" value="monthly"> Monthly</label>
+          <label class="opt"><input type="radio" name="plan" value="annual"> Annual</label>
+          <label class="opt"><input type="radio" name="plan" value="daypass"> Day pass</label>
+        </fieldset>
+        <button type="submit">Become a member</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

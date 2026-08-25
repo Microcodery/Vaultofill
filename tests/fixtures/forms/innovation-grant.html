@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Horizon Innovation Grant</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Georgia, "Times New Roman", serif; background: #fbfaf7; color: #24211c; line-height: 1.55; }
+    .wrap { max-width: 680px; margin: 0 auto; padding: 40px 22px 70px; }
+    header h1 { font-size: 26px; margin: 0; }
+    header p { color: #6b6459; margin: 4px 0 28px; }
+    form { display: block; }
+    .q { margin-bottom: 22px; }
+    label { display: block; font-weight: bold; margin-bottom: 6px; font-size: 15px; }
+    input, textarea { width: 100%; padding: 10px 12px; border: 1px solid #cdc7ba; border-radius: 6px; font-size: 15px; font-family: inherit; background: #fff; }
+    textarea { min-height: 120px; resize: vertical; }
+    .submit { margin-top: 6px; padding: 12px 28px; font-size: 16px; color: #fff; background: #7a3b2e; border: none; border-radius: 6px; cursor: pointer; font-family: inherit; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Horizon Innovation Grant</h1>
+      <p>Funding bold ideas from early-stage organizations.</p>
+    </header>
+
+    <form id="innovation-form" novalidate>
+      <div class="q">
+        <label for="applicant">Full name</label>
+        <input type="text" id="applicant" name="applicant">
+      </div>
+      <div class="q">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email">
+      </div>
+      <div class="q">
+        <label for="org">Organization name</label>
+        <input type="text" id="org" name="org">
+      </div>
+      <div class="q">
+        <label for="objectives">Describe your organization's objectives</label>
+        <textarea id="objectives" name="objectives"></textarea>
+      </div>
+      <div class="q">
+        <label for="years">Years in business</label>
+        <input type="number" id="years" name="years" min="0" step="1">
+      </div>
+      <div class="q">
+        <label for="amount">Grant amount requested</label>
+        <input type="number" id="amount" name="amount" min="0" step="500">
+      </div>
+      <button class="submit" type="submit">Send application</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Coral Line Cruises — Booking Request</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Trebuchet MS", Verdana, sans-serif; background: #e8f4fb; color: #12303f; line-height: 1.5; }
+    .page { max-width: 720px; margin: 0 auto; padding: 34px 20px 64px; }
+    header { text-align: center; margin-bottom: 24px; }
+    header h1 { margin: 0; font-size: 26px; color: #0a5a86; }
+    header p { margin: 4px 0 0; color: #4a6a7a; }
+    form { background: #fff; border: 1px solid #bcdcec; border-radius: 12px; padding: 26px; }
+    .field { margin-bottom: 18px; }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .row .field { flex: 1 1 220px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid #bcd3e0; border-radius: 8px; font-size: 15px; font-family: inherit; }
+    textarea { min-height: 80px; resize: vertical; }
+    button { padding: 12px 26px; font-size: 15px; color: #fff; background: #0a5a86; border: none; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Coral Line Cruises</h1>
+      <p>Request your voyage — we'll confirm cabins within a day.</p>
+    </header>
+    <form id="cruise-form" novalidate>
+      <div class="field">
+        <label for="full-name">Full name</label>
+        <input type="text" id="full-name" name="full_name" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" autocomplete="email">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="embark">Embarkation date</label>
+          <input type="date" id="embark" name="embark">
+        </div>
+        <div class="field">
+          <label for="disembark">Disembarkation date</label>
+          <input type="date" id="disembark" name="disembark">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="guests">Number of guests</label>
+          <input type="number" id="guests" name="guests" min="1" step="1">
+        </div>
+        <div class="field">
+          <label for="cabin">Cabin class</label>
+          <select id="cabin" name="cabin">
+            <option value="">Choose cabin…</option>
+            <option value="interior">Interior</option>
+            <option value="oceanview">Ocean view</option>
+            <option value="balcony">Balcony</option>
+            <option value="suite">Suite</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="dietary">Dietary restrictions</label>
+        <textarea id="dietary" name="dietary" placeholder="Vegetarian, gluten-free, allergies…"></textarea>
+      </div>
+      <button type="submit">Request booking</button>
+    </form>
+  </div>
+</body>
+</html>

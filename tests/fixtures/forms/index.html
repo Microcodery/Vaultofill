@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vaultofill — Test Form Corpus</title>
+  <style>
+    :root {
+      --bg: #0f172a; --card: #1e293b; --line: #334155; --text: #e2e8f0;
+      --muted: #94a3b8; --accent: #38bdf8; --tag: #0ea5e9;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+    }
+    header {
+      padding: 40px 24px 28px; border-bottom: 1px solid var(--line);
+      max-width: 1080px; margin: 0 auto;
+    }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    header p { margin: 4px 0; color: var(--muted); max-width: 70ch; }
+    code { background: #0b1220; padding: 1px 6px; border-radius: 4px; color: var(--accent); font-size: 0.9em; }
+    main { max-width: 1080px; margin: 0 auto; padding: 24px; }
+    .grid {
+      display: grid; gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+    a.card {
+      display: block; text-decoration: none; color: inherit;
+      background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+      padding: 18px 18px 16px; transition: border-color .15s, transform .15s;
+    }
+    a.card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .card h2 { margin: 0 0 6px; font-size: 17px; }
+    .card .desc { color: var(--muted); font-size: 14px; margin: 0 0 12px; }
+    .tag {
+      display: inline-block; font-size: 12px; color: #e0f2fe;
+      background: rgba(14,165,233,.18); border: 1px solid rgba(14,165,233,.4);
+      padding: 2px 8px; border-radius: 999px;
+    }
+    footer { max-width: 1080px; margin: 0 auto; padding: 8px 24px 48px; color: var(--muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Vaultofill — Test Form Corpus</h1>
+    <p>Fourteen self-contained form pages for exercising the DOM&rarr;schema synthesis, matching, fill,
+       and submit pipeline. Each page is fully offline (embedded CSS/JS, no external assets) and
+       deliberately uses a <strong>different markup pattern</strong> for its fields.</p>
+    <p>Every form validates on submit and shows a pass/fail banner &mdash; submission is inert
+       (<code>preventDefault</code>), so the validator <em>is</em> the submit outcome.</p>
+  </header>
+  <main>
+    <div class="grid">
+      <a class="card" href="hotel-reservation.html">
+        <h2>Hotel Reservation</h2>
+        <p class="desc">Clean baseline &mdash; every input uses <code>&lt;label for&gt;</code>.</p>
+        <span class="tag">label[for] baseline</span>
+      </a>
+      <a class="card" href="scholarship-application.html">
+        <h2>Scholarship Application</h2>
+        <p class="desc">Long form grouped into sections, incl. a nested group.</p>
+        <span class="tag">nested fieldsets</span>
+      </a>
+      <a class="card" href="business-grant-application.html">
+        <h2>Business Grant Application</h2>
+        <p class="desc">No visible labels &mdash; meaning carried only by placeholders.</p>
+        <span class="tag">placeholder-only</span>
+      </a>
+      <a class="card" href="food-ordering.html">
+        <h2>Food Ordering</h2>
+        <p class="desc">Labels rendered after inputs; repeated option groups.</p>
+        <span class="tag">visual reorder</span>
+      </a>
+      <a class="card" href="job-application.html">
+        <h2>Job Application</h2>
+        <p class="desc">Cover letter &amp; summary are <code>role="textbox"</code> divs.</p>
+        <span class="tag">ARIA contenteditable</span>
+      </a>
+      <a class="card" href="medical-intake.html">
+        <h2>Medical Intake</h2>
+        <p class="desc">Yes/No history matrix as a table; symptom checkbox group.</p>
+        <span class="tag">table matrix</span>
+      </a>
+      <a class="card" href="event-registration.html">
+        <h2>Event Registration</h2>
+        <p class="desc">Clean labels plus a real <code>&lt;select multiple&gt;</code>.</p>
+        <span class="tag">multi-select</span>
+      </a>
+      <a class="card" href="car-rental.html">
+        <h2>Car Rental</h2>
+        <p class="desc">Labels wrap their inputs with no <code>for</code>/<code>id</code> link.</p>
+        <span class="tag">wrapped labels</span>
+      </a>
+      <a class="card" href="loan-application.html">
+        <h2>Loan Application</h2>
+        <p class="desc">Legacy <code>&lt;table&gt;</code>-based row layout.</p>
+        <span class="tag">table layout</span>
+      </a>
+      <a class="card" href="newsletter-signup.html">
+        <h2>Newsletter Signup</h2>
+        <p class="desc">Minimal placeholder form with a hidden honeypot field.</p>
+        <span class="tag">honeypot</span>
+      </a>
+      <a class="card" href="apartment-rental-application.html">
+        <h2>Apartment Rental Application</h2>
+        <p class="desc">Repeated reference blocks + conditional pet fields.</p>
+        <span class="tag">repeated sections</span>
+      </a>
+      <a class="card" href="flight-booking.html">
+        <h2>Flight Booking</h2>
+        <p class="desc">Labels resolved via <code>aria-labelledby</code> to separate nodes.</p>
+        <span class="tag">aria-labelledby</span>
+      </a>
+      <a class="card" href="vendor-onboarding-w9.html">
+        <h2>Vendor Onboarding (W-9)</h2>
+        <p class="desc">Entity-type radios + typed e-signature; TIN (SSN or EIN).</p>
+        <span class="tag">entity radio + e-sig</span>
+      </a>
+      <a class="card" href="restaurant-reservation.html">
+        <h2>Restaurant Reservation</h2>
+        <p class="desc">Small, compact clean form with <code>&lt;label for&gt;</code>.</p>
+        <span class="tag">compact clean</span>
+      </a>
+    </div>
+  </main>
+  <footer>Test fixtures &mdash; inert, offline, no real backends. Open any page directly in a browser.</footer>
+</body>
+</html>

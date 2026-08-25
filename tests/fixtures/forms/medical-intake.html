@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Riverbend Family Health — Patient Intake</title>
+  <style>
+    :root {
+      --brand: #0e7490;
+      --brand-dark: #155e75;
+      --accent: #14b8a6;
+      --ink: #0f2730;
+      --muted: #5b7079;
+      --line: #dce6e9;
+      --bg: #f3f8f9;
+      --ok: #15803d;
+      --bad: #dc2626;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.45;
+    }
+    header.brand {
+      background: linear-gradient(120deg, var(--brand-dark), var(--brand));
+      color: #fff;
+      padding: 24px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    header.brand .logo { font-size: 30px; }
+    header.brand h1 { margin: 0; font-size: 22px; }
+    header.brand p { margin: 2px 0 0; opacity: .9; font-size: 13px; }
+    main { max-width: 760px; margin: 24px auto; padding: 0 16px 48px; }
+    form {
+      background: #fff; border: 1px solid var(--line); border-radius: 12px;
+      padding: 22px; box-shadow: 0 6px 24px rgba(14,116,144,.06);
+    }
+    fieldset { border: 1px solid var(--line); border-radius: 10px; margin: 0 0 18px; padding: 14px 16px 16px; }
+    legend { font-weight: 700; padding: 0 8px; color: var(--brand-dark); }
+    .field { margin-bottom: 14px; }
+    label.field-label, span.field-label { display: block; font-weight: 600; margin-bottom: 6px; }
+    .hint { color: var(--muted); font-weight: 400; font-size: 12px; }
+    .sensitive-tag {
+      display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .4px;
+      color: #92400e; background: #fef3c7; border: 1px solid #fde68a;
+      border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle;
+    }
+    input[type="text"], input[type="date"] {
+      width: 100%; padding: 9px 11px; border: 1px solid var(--line);
+      border-radius: 8px; font: inherit; background: #fbfefe;
+    }
+    input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    table.matrix { width: 100%; border-collapse: collapse; }
+    table.matrix caption { text-align: left; font-weight: 600; margin-bottom: 8px; }
+    table.matrix th, table.matrix td { border-bottom: 1px solid var(--line); padding: 9px 8px; text-align: left; }
+    table.matrix thead th { color: var(--brand-dark); font-size: 13px; }
+    table.matrix th.yn, table.matrix td.yn { text-align: center; width: 68px; }
+    table.matrix tr.row-error td { background: #fef2f2; }
+    table.matrix tr.row-error th[scope="row"] { color: var(--bad); }
+
+    .checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
+    .check {
+      display: flex; align-items: center; gap: 8px;
+      border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; background: #fbfefe;
+    }
+    .consent {
+      display: flex; align-items: flex-start; gap: 10px;
+      border: 1px solid var(--line); border-radius: 8px; padding: 12px; background: #fbfefe;
+    }
+
+    button[type="submit"] {
+      background: var(--brand); color: #fff; border: 0; border-radius: 8px;
+      padding: 12px 22px; font-size: 16px; font-weight: 700; cursor: pointer;
+    }
+    button[type="submit"]:hover { background: var(--brand-dark); }
+
+    .error-msg { color: var(--bad); font-size: 12px; margin-top: 4px; }
+    .field-error input { border-color: var(--bad); background: #fef2f2; }
+    .field-error > .field-label { color: var(--bad); }
+    .field-error .check, .field-error .consent { border-color: var(--bad); }
+
+    .result { margin-top: 18px; padding: 14px 16px; border-radius: 10px; font-weight: 600; }
+    .result.pass { background: #ecfdf3; color: var(--ok); border: 1px solid #bbf7d0; }
+    .result.fail { background: #fef2f2; color: var(--bad); border: 1px solid #fecaca; }
+    .result h2 { margin: 0 0 6px; font-size: 16px; }
+    .result ul { margin: 6px 0 0 18px; padding: 0; }
+    @media (max-width: 620px) { .grid2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="brand">
+    <div class="logo" aria-hidden="true">🩺</div>
+    <div>
+      <h1>Riverbend Family Health</h1>
+      <p>New Patient Intake · Confidential</p>
+    </div>
+  </header>
+
+  <main>
+    <form id="intake-form" novalidate>
+      <fieldset>
+        <legend>Patient information</legend>
+        <div class="grid2">
+          <div class="field" id="patient-name-field">
+            <label class="field-label" for="patient-name">Patient name</label>
+            <input type="text" name="patient_name" id="patient-name" autocomplete="name">
+            <div class="error-msg" id="patient-name-error"></div>
+          </div>
+          <div class="field" id="dob-field">
+            <label class="field-label" for="dob">Date of birth</label>
+            <input type="date" name="date_of_birth" id="dob">
+            <div class="error-msg" id="dob-error"></div>
+          </div>
+          <div class="field" id="ssn-field">
+            <label class="field-label" for="ssn">Social Security Number
+              <span class="sensitive-tag">SENSITIVE</span>
+              <span class="hint">(###-##-####)</span>
+            </label>
+            <input type="text" name="ssn" id="ssn" inputmode="numeric" placeholder="123-45-6789" autocomplete="off">
+            <div class="error-msg" id="ssn-error"></div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Insurance</legend>
+        <div class="grid2">
+          <div class="field" id="insurance-provider-field">
+            <label class="field-label" for="insurance-provider">Insurance provider</label>
+            <input type="text" name="insurance_provider" id="insurance-provider">
+            <div class="error-msg" id="insurance-provider-error"></div>
+          </div>
+          <div class="field" id="insurance-member-id-field">
+            <label class="field-label" for="insurance-member-id">Member ID
+              <span class="sensitive-tag">SENSITIVE</span>
+            </label>
+            <input type="text" name="insurance_member_id" id="insurance-member-id" autocomplete="off">
+            <div class="error-msg" id="insurance-member-id-error"></div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Medical history</legend>
+        <div class="field" id="history-field">
+          <table class="matrix">
+            <caption>Have you ever been diagnosed with any of the following? <span class="hint">(answer every row)</span></caption>
+            <thead>
+              <tr>
+                <th scope="col">Condition</th>
+                <th scope="col" class="yn">Yes</th>
+                <th scope="col" class="yn">No</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="history-diabetes-row">
+                <th scope="row">Diabetes</th>
+                <td class="yn"><input type="radio" name="history_diabetes" id="history-diabetes-yes" value="yes" aria-label="Diabetes: Yes"></td>
+                <td class="yn"><input type="radio" name="history_diabetes" id="history-diabetes-no" value="no" aria-label="Diabetes: No"></td>
+              </tr>
+              <tr id="history-hypertension-row">
+                <th scope="row">Hypertension</th>
+                <td class="yn"><input type="radio" name="history_hypertension" id="history-hypertension-yes" value="yes" aria-label="Hypertension: Yes"></td>
+                <td class="yn"><input type="radio" name="history_hypertension" id="history-hypertension-no" value="no" aria-label="Hypertension: No"></td>
+              </tr>
+              <tr id="history-asthma-row">
+                <th scope="row">Asthma</th>
+                <td class="yn"><input type="radio" name="history_asthma" id="history-asthma-yes" value="yes" aria-label="Asthma: Yes"></td>
+                <td class="yn"><input type="radio" name="history_asthma" id="history-asthma-no" value="no" aria-label="Asthma: No"></td>
+              </tr>
+              <tr id="history-allergies-row">
+                <th scope="row">Allergies</th>
+                <td class="yn"><input type="radio" name="history_allergies" id="history-allergies-yes" value="yes" aria-label="Allergies: Yes"></td>
+                <td class="yn"><input type="radio" name="history_allergies" id="history-allergies-no" value="no" aria-label="Allergies: No"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="error-msg" id="history-error"></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Current symptoms</legend>
+        <div class="field" id="symptoms-field">
+          <span class="field-label">Select any you are currently experiencing <span class="hint">(optional)</span></span>
+          <div class="checks">
+            <div class="check"><input type="checkbox" name="symptoms" id="symptom-fever" value="fever"><label for="symptom-fever">Fever</label></div>
+            <div class="check"><input type="checkbox" name="symptoms" id="symptom-cough" value="cough"><label for="symptom-cough">Cough</label></div>
+            <div class="check"><input type="checkbox" name="symptoms" id="symptom-fatigue" value="fatigue"><label for="symptom-fatigue">Fatigue</label></div>
+            <div class="check"><input type="checkbox" name="symptoms" id="symptom-headache" value="headache"><label for="symptom-headache">Headache</label></div>
+            <div class="check"><input type="checkbox" name="symptoms" id="symptom-nausea" value="nausea"><label for="symptom-nausea">Nausea</label></div>
+            <div class="check"><input type="checkbox" name="symptoms" id="symptom-shortness" value="shortness_of_breath"><label for="symptom-shortness">Shortness of breath</label></div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Consent</legend>
+        <div class="field" id="consent-field">
+          <div class="consent">
+            <input type="checkbox" name="consent" id="consent" value="agree">
+            <label for="consent">I consent to treatment and certify the information above is accurate to the best of my knowledge.</label>
+          </div>
+          <div class="error-msg" id="consent-error"></div>
+        </div>
+      </fieldset>
+
+      <button type="submit">Submit Intake</button>
+      <div id="result" class="result" role="status" aria-live="polite" hidden></div>
+    </form>
+  </main>
+
+  <script>
+    (function () {
+      var form = document.getElementById('intake-form');
+      var result = document.getElementById('result');
+      var historyRows = [
+        { name: 'history_diabetes', row: 'history-diabetes-row', label: 'Diabetes' },
+        { name: 'history_hypertension', row: 'history-hypertension-row', label: 'Hypertension' },
+        { name: 'history_asthma', row: 'history-asthma-row', label: 'Asthma' },
+        { name: 'history_allergies', row: 'history-allergies-row', label: 'Allergies' }
+      ];
+
+      function setError(fieldId, message, failures) {
+        var field = document.getElementById(fieldId + '-field');
+        if (field) field.classList.add('field-error');
+        var msg = document.getElementById(fieldId + '-error');
+        if (msg) msg.textContent = message;
+        failures.push({ fieldId: fieldId, message: message });
+      }
+      function clearErrors() {
+        form.querySelectorAll('.field-error').forEach(function (el) { el.classList.remove('field-error'); });
+        form.querySelectorAll('.row-error').forEach(function (el) { el.classList.remove('row-error'); });
+        form.querySelectorAll('.error-msg').forEach(function (el) { el.textContent = ''; });
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearErrors();
+        var failures = [];
+
+        if (!document.getElementById('patient-name').value.trim())
+          setError('patient-name', 'Patient name is required.', failures);
+
+        if (!document.getElementById('dob').value.trim())
+          setError('dob', 'Date of birth is required.', failures);
+
+        var ssn = document.getElementById('ssn').value.trim();
+        if (!ssn) setError('ssn', 'SSN is required.', failures);
+        else if (!/^\d{3}-\d{2}-\d{4}$/.test(ssn)) setError('ssn', 'SSN must match ###-##-####.', failures);
+
+        if (!document.getElementById('insurance-provider').value.trim())
+          setError('insurance-provider', 'Insurance provider is required.', failures);
+
+        if (!document.getElementById('insurance-member-id').value.trim())
+          setError('insurance-member-id', 'Member ID is required.', failures);
+
+        var unanswered = [];
+        historyRows.forEach(function (h) {
+          if (!form.querySelector('input[name="' + h.name + '"]:checked')) {
+            unanswered.push(h.label);
+            var row = document.getElementById(h.row);
+            if (row) row.classList.add('row-error');
+          }
+        });
+        if (unanswered.length) {
+          document.getElementById('history-field').classList.add('field-error');
+          var msg = document.getElementById('history-error');
+          msg.textContent = 'Answer every history row (missing: ' + unanswered.join(', ') + ').';
+          failures.push({ fieldId: 'history', message: 'Answer every medical-history row (missing: ' + unanswered.join(', ') + ').' });
+        }
+
+        if (!document.getElementById('consent').checked)
+          setError('consent', 'You must consent to treatment to continue.', failures);
+
+        if (failures.length) {
+          result.className = 'result fail';
+          result.innerHTML = '<h2>✗ Submission failed — ' + failures.length + ' issue(s)</h2><ul>' +
+            failures.map(function (f) { return '<li>' + f.message + '</li>'; }).join('') + '</ul>';
+        } else {
+          result.className = 'result pass';
+          result.textContent = '✓ Submission passed — all fields valid.';
+        }
+        result.hidden = false;
+        result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    })();
+  </script>
+</body>
+</html>

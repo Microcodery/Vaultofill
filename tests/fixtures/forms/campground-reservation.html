@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pinewood Campground — Reservation</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Verdana", Geneva, sans-serif; background: #f2f6ec; color: #26331d; line-height: 1.5; }
+    .wrap { max-width: 700px; margin: 0 auto; padding: 34px 20px 60px; }
+    h1 { font-size: 23px; margin: 0 0 4px; color: #3a5a2b; }
+    .intro { color: #5e6b52; margin: 0 0 24px; }
+    form { background: #fff; border: 1px solid #cfdcc2; border-radius: 10px; padding: 24px; }
+    .field { margin-bottom: 18px; }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .row .field { flex: 1 1 200px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    input { width: 100%; padding: 10px 12px; border: 1px solid #c4d2b6; border-radius: 8px; font-size: 15px; }
+    fieldset { border: 1px solid #cfdcc2; border-radius: 8px; padding: 10px 14px; margin: 0 0 18px; }
+    legend { font-weight: 600; font-size: 14px; padding: 0 6px; }
+    .opt { display: inline-flex; align-items: center; gap: 8px; margin-right: 18px; font-weight: 400; }
+    .opt input { width: auto; }
+    button { padding: 12px 26px; font-size: 15px; color: #fff; background: #3a5a2b; border: none; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Pinewood Campground</h1>
+    <p class="intro">Reserve a site under the pines.</p>
+    <form id="camp-form" novalidate>
+      <div class="field">
+        <label for="full-name">Full name</label>
+        <input type="text" id="full-name" name="full_name" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" autocomplete="email">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="arrival">Arrival date</label>
+          <input type="date" id="arrival" name="arrival">
+        </div>
+        <div class="field">
+          <label for="departure">Departure date</label>
+          <input type="date" id="departure" name="departure">
+        </div>
+      </div>
+      <div class="field">
+        <label for="party-size">Party size</label>
+        <input type="number" id="party-size" name="party_size" min="1" step="1">
+      </div>
+      <fieldset>
+        <legend>Site type</legend>
+        <label class="opt"><input type="radio" name="site_type" value="tent"> Tent</label>
+        <label class="opt"><input type="radio" name="site_type" value="rv"> RV hookup</label>
+        <label class="opt"><input type="radio" name="site_type" value="cabin"> Cabin</label>
+      </fieldset>
+      <div class="row">
+        <div class="field">
+          <label for="ec-name">Emergency contact name</label>
+          <input type="text" id="ec-name" name="ec_name">
+        </div>
+        <div class="field">
+          <label for="ec-phone">Emergency contact phone</label>
+          <input type="tel" id="ec-phone" name="ec_phone">
+        </div>
+      </div>
+      <button type="submit">Reserve site</button>
+    </form>
+  </div>
+</body>
+</html>

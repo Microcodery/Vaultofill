@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Azure Cove Resort — Reservation Request</title>
+  <style>
+    :root {
+      --brand: #0a6c74;
+      --brand-dark: #084e54;
+      --brand-light: #e6f3f4;
+      --accent: #d98c3f;
+      --bg: #f4f7f8;
+      --text: #1d2b2c;
+      --muted: #5c6f70;
+      --border: #c6d5d6;
+      --error: #c0392b;
+      --error-bg: #fdecea;
+      --ok: #1e7a4d;
+      --ok-bg: #e7f6ee;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+    }
+    .page { max-width: 760px; margin: 0 auto; padding: 0 20px 60px; }
+    header.brand {
+      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+      color: #fff;
+      padding: 28px 0;
+      margin-bottom: 28px;
+    }
+    header.brand .page { padding-bottom: 0; }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-mark {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--accent); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+    }
+    .logo h1 { margin: 0; font-size: 22px; letter-spacing: 0.5px; }
+    .logo p { margin: 2px 0 0; font-size: 13px; opacity: 0.9; }
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 2px 10px rgba(10, 108, 116, 0.06);
+    }
+    .card h2 { margin-top: 0; color: var(--brand-dark); }
+    .intro { color: var(--muted); margin-top: -6px; margin-bottom: 24px; }
+    .field { margin-bottom: 20px; }
+    .row { display: flex; gap: 18px; flex-wrap: wrap; }
+    .row .field { flex: 1 1 220px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    .req { color: var(--accent); }
+    input[type=text], input[type=email], input[type=tel], input[type=date],
+    input[type=number], select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: inherit;
+      background: #fff;
+      color: var(--text);
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px var(--brand-light);
+    }
+    textarea { resize: vertical; min-height: 90px; }
+    fieldset { border: none; margin: 0; padding: 0; }
+    fieldset legend { font-weight: 600; margin-bottom: 6px; font-size: 14px; padding: 0; }
+    .radio-group, .check-line { display: flex; gap: 20px; flex-wrap: wrap; }
+    .radio-group label, .check-line label {
+      font-weight: 400; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 0;
+    }
+    .radio-group input, .check-line input { width: auto; }
+    .consent { display: flex; gap: 10px; align-items: flex-start; }
+    .consent input { margin-top: 3px; width: auto; }
+    .consent label { font-weight: 400; margin-bottom: 0; }
+    .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .field-error input, .field-error select, .field-error textarea,
+    input.field-error, select.field-error, textarea.field-error {
+      border-color: var(--error);
+      background: var(--error-bg);
+    }
+    .error-msg { display: block; color: var(--error); font-size: 12px; margin-top: 5px; min-height: 0; }
+    .actions { margin-top: 8px; }
+    button[type=submit] {
+      background: var(--brand);
+      color: #fff;
+      border: none;
+      padding: 13px 26px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button[type=submit]:hover { background: var(--brand-dark); }
+    .result {
+      margin-top: 24px;
+      padding: 16px 20px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+    }
+    .result h3 { margin: 0 0 8px; font-size: 17px; }
+    .result ul { margin: 0; padding-left: 20px; }
+    .result.pass { background: var(--ok-bg); border-color: var(--ok); color: var(--ok); }
+    .result.fail { background: var(--error-bg); border-color: var(--error); color: var(--error); }
+  </style>
+</head>
+<body>
+  <header class="brand">
+    <div class="page">
+      <div class="logo">
+        <div class="logo-mark" aria-hidden="true">&#9832;</div>
+        <div>
+          <h1>Azure Cove Resort &amp; Spa</h1>
+          <p>Oceanfront serenity &middot; Reservation request</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="card">
+      <h2>Reserve your stay</h2>
+      <p class="intro">Tell us about your visit and we'll confirm availability within 24 hours. Fields marked <span class="req">*</span> are required.</p>
+
+      <form id="reservation-form" novalidate>
+        <div class="row">
+          <div class="field">
+            <label for="full-name">Full name <span class="req">*</span></label>
+            <input type="text" id="full-name" name="full_name" autocomplete="name">
+            <span class="error-msg" id="full-name-error"></span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="email">Email address <span class="req">*</span></label>
+            <input type="email" id="email" name="email" autocomplete="email">
+            <span class="error-msg" id="email-error"></span>
+          </div>
+          <div class="field">
+            <label for="phone">Phone number <span class="req">*</span></label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel">
+            <span class="error-msg" id="phone-error"></span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="checkin-date">Check-in date <span class="req">*</span></label>
+            <input type="date" id="checkin-date" name="checkin_date">
+            <span class="error-msg" id="checkin-date-error"></span>
+          </div>
+          <div class="field">
+            <label for="checkout-date">Check-out date <span class="req">*</span></label>
+            <input type="date" id="checkout-date" name="checkout_date">
+            <span class="error-msg" id="checkout-date-error"></span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="room-type">Room type <span class="req">*</span></label>
+            <select id="room-type" name="room_type">
+              <option value="">Select a room type&hellip;</option>
+              <option value="standard">Standard</option>
+              <option value="deluxe">Deluxe</option>
+              <option value="suite">Suite</option>
+            </select>
+            <span class="error-msg" id="room-type-error"></span>
+          </div>
+          <div class="field">
+            <label for="guests">Number of guests <span class="req">*</span></label>
+            <input type="number" id="guests" name="guests" min="1" max="8" step="1">
+            <div class="hint">Between 1 and 8 guests.</div>
+            <span class="error-msg" id="guests-error"></span>
+          </div>
+        </div>
+
+        <div class="field">
+          <fieldset>
+            <legend>Bed preference <span class="req">*</span></legend>
+            <div class="radio-group">
+              <label><input type="radio" name="bed_preference" value="king"> King</label>
+              <label><input type="radio" name="bed_preference" value="queen"> Queen</label>
+              <label><input type="radio" name="bed_preference" value="twin"> Twin</label>
+            </div>
+          </fieldset>
+          <span class="error-msg" id="bed-preference-error"></span>
+        </div>
+
+        <div class="field">
+          <label for="special-requests">Special requests <span class="hint" style="font-weight:400">(optional)</span></label>
+          <textarea id="special-requests" name="special_requests" placeholder="Early check-in, accessibility needs, celebrations&hellip;"></textarea>
+        </div>
+
+        <div class="field">
+          <div class="consent">
+            <input type="checkbox" id="cancellation-policy" name="cancellation_policy" value="agreed">
+            <label for="cancellation-policy">I have read and agree to the cancellation policy. <span class="req">*</span></label>
+          </div>
+          <span class="error-msg" id="cancellation-policy-error"></span>
+        </div>
+
+        <div class="actions">
+          <button type="submit">Request reservation</button>
+        </div>
+
+        <div id="result" class="result" role="status" aria-live="polite" hidden></div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var form = document.getElementById('reservation-form');
+      var result = document.getElementById('result');
+
+      var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      function fieldOf(id) { return document.getElementById(id); }
+      function wrapper(el) { return el.closest('.field') || el; }
+
+      function clearErrors() {
+        form.querySelectorAll('.field-error').forEach(function (el) {
+          el.classList.remove('field-error');
+        });
+        form.querySelectorAll('.error-msg').forEach(function (el) {
+          el.textContent = '';
+        });
+      }
+
+      function todayStr() {
+        var d = new Date();
+        var m = String(d.getMonth() + 1).padStart(2, '0');
+        var day = String(d.getDate()).padStart(2, '0');
+        return d.getFullYear() + '-' + m + '-' + day;
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearErrors();
+        var failures = [];
+
+        function fail(fieldId, message, control) {
+          failures.push({ fieldId: fieldId, message: message });
+          var el = control || fieldOf(fieldId);
+          if (el) wrapper(el).classList.add('field-error');
+          var msg = document.getElementById(fieldId + '-error');
+          if (msg) msg.textContent = message;
+        }
+
+        var name = fieldOf('full-name');
+        if (!name.value.trim()) fail('full-name', 'Full name is required.');
+
+        var email = fieldOf('email');
+        if (!email.value.trim()) fail('email', 'Email is required.');
+        else if (!emailRe.test(email.value.trim())) fail('email', 'Enter a valid email address.');
+
+        var phone = fieldOf('phone');
+        var digits = phone.value.replace(/\D/g, '');
+        if (!phone.value.trim()) fail('phone', 'Phone number is required.');
+        else if (digits.length < 10) fail('phone', 'Enter a phone number with at least 10 digits.');
+
+        var today = todayStr();
+        var checkin = fieldOf('checkin-date');
+        var checkout = fieldOf('checkout-date');
+        if (!checkin.value) fail('checkin-date', 'Check-in date is required.');
+        else if (checkin.value < today) fail('checkin-date', 'Check-in must be today or later.');
+
+        if (!checkout.value) fail('checkout-date', 'Check-out date is required.');
+        else if (checkin.value && checkout.value <= checkin.value) {
+          fail('checkout-date', 'Check-out must be after check-in.');
+        }
+
+        var room = fieldOf('room-type');
+        if (!room.value) fail('room-type', 'Please choose a room type.');
+
+        var guests = fieldOf('guests');
+        var g = parseInt(guests.value, 10);
+        if (!guests.value.trim()) fail('guests', 'Number of guests is required.');
+        else if (isNaN(g) || g < 1 || g > 8) fail('guests', 'Guests must be between 1 and 8.');
+
+        var bed = form.querySelector('input[name="bed_preference"]:checked');
+        if (!bed) {
+          var bedRadio = form.querySelector('input[name="bed_preference"]');
+          fail('bed-preference', 'Select a bed preference.', bedRadio);
+        }
+
+        var policy = fieldOf('cancellation-policy');
+        if (!policy.checked) fail('cancellation-policy', 'You must agree to the cancellation policy.');
+
+        if (failures.length) {
+          var items = failures.map(function (f) { return '<li>' + f.message + '</li>'; }).join('');
+          result.className = 'result fail';
+          result.innerHTML = '<h3>&#10007; Submission failed &mdash; ' + failures.length +
+            ' issue(s)</h3><ul>' + items + '</ul>';
+        } else {
+          result.className = 'result pass';
+          result.innerHTML = '<h3>&#10003; Submission passed &mdash; all fields valid.</h3>';
+        }
+        result.hidden = false;
+        result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    })();
+  </script>
+</body>
+</html>
